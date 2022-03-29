@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kkt.demo.biz.mapper.FaqMapper">
+
+	<select id="getList" resultType="com.kkt.demo.biz.vo.Faq">
+		/* FaqMapper.getList */
+		SELECT
+			F.*
+		FROM FAQ F
+		WHERE F.FAQ_DEL_YN = 'N'
+	</select>
+
+	<insert id="insert" parameterType="com.kkt.demo.biz.vo.Faq" useGeneratedKeys="true" keyColumn="faq_seq">
+		/* FaqMapper.insert */
+		INSERT INTO FAQ
+		(
+			FAQ_TITLE
+			,FAQ_CONTENT
+			,FAQ_DEL_YN
+			,FAQ_TYPE
+		)
+		VALUES
+		(
+			#{faqTitle }
+			,#{FaqContent }
+			,'N'
+			,#{FaqType }
+		)
+	</insert>
+
+	<update id="update" parameterType="com.kkt.demo.biz.vo.Faq">
+		/* FaqMapper.update */
+		update faq set
+			 faq_title 		= #{faqTitle}
+			,faq_content 	= #{faqContent}
+			,faq_del_yn		= #{faqDelYn}
+		where faq_seq 		= #{faqSeq}
+	</update>
+
+</mapper>

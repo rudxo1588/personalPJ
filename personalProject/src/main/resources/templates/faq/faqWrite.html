@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<title>FAQ 등록</title>
+<script>
+	$.fn.serializeObject = function() {
+	  var result = {}
+	  var extend = function(i, element) {
+	    var node = result[element.name]
+	    if ("undefined" !== typeof node && node !== null) {
+	      if ($.isArray(node)) {
+	        node.push(element.value)
+	      } else {
+	        result[element.name] = [node, element.value]
+	      }
+	    } else {
+	      result[element.name] = element.value
+	    }
+	  }
+
+	  $.each(this.serializeArray(), extend)
+	  return result
+	}
+
+
+	function fnRegBtn() {
+		if($('#faqTitle').val() == '') {
+			alert('제목을 입력해 주세요');
+			$('#faqTitle').focus();
+			return;
+		}
+
+		if($('#faqContent').val() == '') {
+			alert('내용을 입력해 주세요');
+			$('#faqContent').focus();
+			return;
+		}
+
+		var formData = $('#frm').serializeObject();
+
+		$.ajax({
+			 url 		: '/faq/add'
+			,type 		: 'post'
+			,data 		: JSON.stringify(formData)
+			,contentType: 'application/json'
+			,success	: function(res) {
+				alert('저장 성공');
+				location.href = '/faq/list';
+			}
+			,error 		: function(request) {
+				alert(JSON.parse(request.responseText).reason);
+			}
+		})
+	}
+</script>
+</head>
+<body>
+	<div align="center">
+		<form id="frm" name="frm">
+			<table>
+				<tr>
+					<th>제목</th>
+					<td><input type="text" id="faqTitle" name="faqTitle"></td>
+				</tr>
+				<tr>
+					<th>내용</th>
+					<td><input type="text" id="faqContent" name="faqContent"></td>
+				</tr>
+				<tr>
+					<td><button type="button" onclick="fnRegBtn()">저장</button></td>
+				</tr>
+			</table>
+		</form>
+	</div>
+</body>
+</html>
