@@ -1,4 +1,6 @@
-package com.kkt.demo.biz.vo;
+package com.kkt.demo.biz.faq.vo;
+
+import java.util.List;
 
 import javax.validation.constraints.NotBlank;
 
@@ -17,4 +19,6 @@ public class Faq {
 	private String FaqCreatedt;
 	private String FaqDelYn;
 	private String FaqType;
+
+	private List<FaqImg> faqImgList;
 }

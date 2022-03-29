@@ -1,11 +1,11 @@
-package com.kkt.demo.biz.service;
+package com.kkt.demo.biz.faq.service;
 
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.kkt.demo.biz.mapper.FaqMapper;
-import com.kkt.demo.biz.vo.Faq;
+import com.kkt.demo.biz.faq.mapper.FaqMapper;
+import com.kkt.demo.biz.faq.vo.Faq;
 
 import lombok.RequiredArgsConstructor;
 

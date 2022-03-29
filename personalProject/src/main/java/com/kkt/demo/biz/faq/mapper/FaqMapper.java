@@ -1,10 +1,10 @@
-package com.kkt.demo.biz.mapper;
+package com.kkt.demo.biz.faq.mapper;
 
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.kkt.demo.biz.vo.Faq;
+import com.kkt.demo.biz.faq.vo.Faq;
 
 @Mapper
 public interface FaqMapper {

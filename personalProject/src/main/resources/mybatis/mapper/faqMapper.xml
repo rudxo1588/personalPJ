@@ -2,6 +2,11 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kkt.demo.biz.mapper.FaqMapper">
 
+	<resultMap id="faqResultMap" type="com.kkt.demo.biz.faq.vo.Faq" autoMapping="true">
+		<id column="faq_seq" property="faqSeq"/>
+		<collection column="faq_seq" property="faqImgList" ofType="com.kkt.demo.biz.faq.vo.FaqImg" select="com.kkt.demo.biz.faq.mapper.FaqImgMapper.getList" javaType="java.util.ArrayList"  autoMapping="true"/>
+	</resultMap>
+
 	<select id="getList" resultType="com.kkt.demo.biz.vo.Faq">
 		/* FaqMapper.getList */
 		SELECT

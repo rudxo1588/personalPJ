@@ -1,4 +1,4 @@
-package com.kkt.demo.biz.controller;
+package com.kkt.demo.biz.faq.controller;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.kkt.demo.biz.service.FaqService;
-import com.kkt.demo.biz.vo.Faq;
+import com.kkt.demo.biz.faq.service.FaqService;
+import com.kkt.demo.biz.faq.vo.Faq;
 
 import lombok.RequiredArgsConstructor;
 
