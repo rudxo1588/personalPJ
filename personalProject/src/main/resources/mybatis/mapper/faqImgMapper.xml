@@ -2,12 +2,46 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kkt.demo.biz.faq.mapper.FaqImgMapper">
 
-	<select id="getList">
+	<!-- faqImg 조회 -->
+	<select id="getList" resultType="com.kkt.demo.biz.faq.vo.FaqImg">
+		/* FaqImgMapper.getList */
 		SELECT
-			FI.*
-		FROM FAQ_IMG FI
-		WHERE FI.FAQ_SEQ = #{faqSeq}
-		AND FI.DEL_YN = #{delYn}
+			fi.*
+		FROM faq_img fi
+		WHERE fi.faq_seq = #{faqSeq}
+		AND fi.del_yn = 'N'
 	</select>
+
+	<!-- faqImg 저장 -->
+	<insert id="insert" parameterType="com.kkt.demo.biz.faq.vo.FaqImg">
+		/* FaqImgMapper.insert */
+		INSERT INTO faq
+		(
+			 faq_seq
+			,faq_img
+			,del_yn
+		)
+		VALUES
+		(
+			 #{faqSeq}
+			,#{faqImg}
+			,'N'
+		)
+	</insert>
+
+	<!-- faqImg 삭제 -->
+	<update id="deleteByFaqSeq" parameterType="com.kkt.demo.biz.faq.vo.FaqImg">
+		/* FaqImgMapper.update */
+		DELETE FROM faq
+		WHERE faq_seq = #{faqSeq}
+	</update>
+
+	<!-- faqImg 삭제 -->
+	<update id="delete" parameterType="com.kkt.demo.biz.faq.vo.FaqImg">
+		/* FaqImgMapper.delete */
+		UPDATE faq SET
+			del_yn = #{delYn}
+		WHERE img_seq = #{imgSeq}
+	</update>
 
 </mapper>

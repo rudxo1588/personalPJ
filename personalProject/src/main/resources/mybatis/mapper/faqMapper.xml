@@ -7,7 +7,8 @@
 		<collection column="faq_seq" property="faqImgList" ofType="com.kkt.demo.biz.faq.vo.FaqImg" select="com.kkt.demo.biz.faq.mapper.FaqImgMapper.getList" javaType="java.util.ArrayList"  autoMapping="true"/>
 	</resultMap>
 
-	<select id="getList" resultType="com.kkt.demo.biz.vo.Faq">
+	<!-- faq리스트 조회 -->
+	<select id="getList" resultType="com.kkt.demo.biz.faq.vo.Faq">
 		/* FaqMapper.getList */
 		SELECT
 			F.*
@@ -15,30 +16,50 @@
 		WHERE F.FAQ_DEL_YN = 'N'
 	</select>
 
-	<insert id="insert" parameterType="com.kkt.demo.biz.vo.Faq" useGeneratedKeys="true" keyColumn="faq_seq">
+	<!-- faq상세 조회 -->
+	<select id="getDetail" resultMap="faqResultMap">
+		/* FaqMapper.getList */
+		SELECT
+			f.*
+		FROM faq f
+		WHERE f.faq_del_yn = 'N'
+		AND f.faq_seq = #{faqSeq}
+	</select>
+
+	<!-- faq 저장 -->
+	<insert id="insert" parameterType="com.kkt.demo.biz.faq.vo.Faq" useGeneratedKeys="true" keyColumn="faq_seq">
 		/* FaqMapper.insert */
 		INSERT INTO FAQ
 		(
-			FAQ_TITLE
-			,FAQ_CONTENT
-			,FAQ_DEL_YN
-			,FAQ_TYPE
+			 faq_title
+			,faq_content
+			,faq_del_yn
+			,faq_type
 		)
 		VALUES
 		(
-			#{faqTitle }
-			,#{FaqContent }
+			#{faqTitle}
+			,#{FaqContent}
 			,'N'
-			,#{FaqType }
+			,#{FaqType}
 		)
 	</insert>
 
-	<update id="update" parameterType="com.kkt.demo.biz.vo.Faq">
+	<!-- faq 수정 -->
+	<update id="update" parameterType="com.kkt.demo.biz.faq.vo.Faq">
 		/* FaqMapper.update */
 		update faq set
 			 faq_title 		= #{faqTitle}
 			,faq_content 	= #{faqContent}
 			,faq_del_yn		= #{faqDelYn}
+		where faq_seq 		= #{faqSeq}
+	</update>
+
+	<!-- faq 삭제 -->
+	<update id="delete" parameterType="com.kkt.demo.biz.faq.vo.Faq">
+		/* FaqMapper.update */
+		update faq set
+			,faq_del_yn		= 'Y'
 		where faq_seq 		= #{faqSeq}
 	</update>
 

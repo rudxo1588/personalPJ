@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<title>FAQ 목록</title>
+<script>
+	function fnRegBtn() {
+		location.href = '/faq/add';
+	}
+</script>
+</head>
+<body>
+	<div align="center">
+		<table>
+			<colgroup>
+				<col width="50px">
+				<col width="200px">
+				<col width="200px">
+				<col width="100px">
+			</colgroup>
+			<tr>
+				<th>번호</th>
+				<th>제목</th>
+				<th>내용</th>
+				<th>등록일</th>
+			</tr>
+				<td>[[${list.faqSeq}]]</td>
+				<td>[[${list.faqTitle}]]</td>
+				<td>[[${list.faqContent}]]</td>
+				<td>[[${list.faqCreatedt.substring(0,10)}]]</td>
+			<tr>
+				<td colspan="4" style="text-align: right;">
+					<button type="button" onclick="fnRegBtn()">등록</button>
+				</td>
+			</tr>
+		</table>
+	</div>
+</body>
+</html>

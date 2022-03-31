@@ -19,4 +19,7 @@ public interface FaqImgMapper {
 	// faqimg 등록
 	int insert(FaqImg faqImg);
 
+	// faqimg 삭제
+	int deleteByFaqSeq(FaqImg faqImg);
+
 }

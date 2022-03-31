@@ -12,5 +12,12 @@ public interface FaqMapper {
 	// faq리스트 조회
 	List<Faq> getList();
 
+	// faq등록
 	int insert(Faq faq);
+
+	int update(Faq faq);
+
+	int delete(Faq faq);
+
+	Faq getDetail(Faq faq);
 }
