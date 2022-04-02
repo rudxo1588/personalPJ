@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -43,11 +44,11 @@ public class FaqController {
 	}
 
 	/*
-	 * faq 등록화면
+	 * faq 등록
 	 */
 	@PostMapping("/add")
 	@ResponseBody
-	public void add(@RequestBody @Valid Faq faq) {
+	public void add( @RequestBody @Valid Faq faq) {
 		faqService.add(faq);
 	}
 }
