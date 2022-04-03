@@ -1,7 +1,10 @@
 package com.kkt.demo.biz.faq.controller;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -9,10 +12,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kkt.demo.biz.faq.service.FaqService;
 import com.kkt.demo.biz.faq.vo.Faq;
+import com.kkt.demo.tools.FileTools;
 
 import lombok.RequiredArgsConstructor;
 
@@ -48,7 +53,8 @@ public class FaqController {
 	 */
 	@PostMapping("/add")
 	@ResponseBody
-	public void add( @RequestBody @Valid Faq faq) {
-		faqService.add(faq);
+	public void add(Faq faq, @RequestParam(value = "file", required = false) List<MultipartFile> file) throws Exception {
+
+		faqService.add(faq, file);
 	}
 }

@@ -15,7 +15,7 @@
 	<!-- faqImg 저장 -->
 	<insert id="insert" parameterType="com.kkt.demo.biz.faq.vo.FaqImg">
 		/* FaqImgMapper.insert */
-		INSERT INTO faq
+		INSERT INTO faq_img
 		(
 			 faq_seq
 			,faq_img
@@ -32,14 +32,14 @@
 	<!-- faqImg 삭제 -->
 	<update id="deleteByFaqSeq" parameterType="com.kkt.demo.biz.faq.vo.FaqImg">
 		/* FaqImgMapper.update */
-		DELETE FROM faq
+		DELETE FROM faq_img
 		WHERE faq_seq = #{faqSeq}
 	</update>
 
 	<!-- faqImg 삭제 -->
 	<update id="delete" parameterType="com.kkt.demo.biz.faq.vo.FaqImg">
 		/* FaqImgMapper.delete */
-		UPDATE faq SET
+		UPDATE faq_img SET
 			del_yn = #{delYn}
 		WHERE img_seq = #{imgSeq}
 	</update>
