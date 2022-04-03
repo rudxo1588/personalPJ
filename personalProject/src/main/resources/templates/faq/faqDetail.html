@@ -3,23 +3,37 @@
 <head>
 <meta charset="UTF-8">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script type="text/javascript" src="../js/jquery.tmpl.min.js"></script>
 <title>FAQ 목록</title>
 <script>
 	function fnRegBtn() {
 		location.href = '/faq/add';
 	}
+
+	function fnAddFileRow() {
+		if($('.file').length == 5) {
+			alert('이미지는 최대 다섯개까지 추가 가능합니다.');
+			return;
+		}
+
+		$('#addFileRow').tmpl().appendTo('#faqTable');
+	}
+
+	function fnDelFileRow(obj) {
+		$(obj).parent().parent().remove();
+	}
 </script>
 </head>
 <body>
-	<div align="center">
+	<div align="center" th:object="${faq}">
 		<table>
 			<tr>
 				<th>제목</th>
-				<td>[[${faq.faqTitle}]]</td>
+				<td><input type="text" id="faqTitle" name="faqTitle" th:value="*{faqTitle}"></td>
 			</tr>
 			<tr>
 				<th>내용</th>
-				<td>[[${faq.faqContent}]]</td>
+				<td><input type="text" id="faqContent" name="faqContent" th:value="*{faqContent}"></td>
 			</tr>
 			<tr>
 				<td><button type="button" onclick="fnRegBtn()">저장</button></td>
@@ -33,4 +47,12 @@
 		</table>
 	</div>
 </body>
+<script type="text/x-jQuery-tmpl" id="addFileRow">
+	<tr>
+		<td>
+			<input type="file" name="file" id="file" class="file">
+			<button type="button" onclick="fnDelFileRow(this)">-</button>
+		</td>
+	</tr>
+</script>
 </html>
