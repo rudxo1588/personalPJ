@@ -3,7 +3,7 @@
 <mapper namespace="com.kkt.demo.biz.faq.mapper.FaqImgMapper">
 
 	<!-- faqImg 조회 -->
-	<select id="getList" resultType="com.kkt.demo.biz.faq.vo.FaqImg">
+	<select id="getList" resultType="com.kkt.demo.biz.faq.vo.FaqImg" parameterType="com.kkt.demo.biz.faq.vo.Faq">
 		/* FaqImgMapper.getList */
 		SELECT
 			fi.*

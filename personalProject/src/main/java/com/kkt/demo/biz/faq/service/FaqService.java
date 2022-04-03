@@ -30,6 +30,13 @@ public class FaqService {
 	}
 
 	/*
+	 * faq상세화면
+	 */
+	public Faq getDetail(Faq faq) {
+		return faqMapper.getDetail(faq);
+	}
+
+	/*
 	 * faq저장
 	 */
 	public int add(Faq faq, List<MultipartFile> file) throws Exception {

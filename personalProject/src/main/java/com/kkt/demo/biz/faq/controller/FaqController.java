@@ -57,4 +57,15 @@ public class FaqController {
 
 		faqService.add(faq, file);
 	}
+
+	/*
+	 * faq상세화면
+	 */
+	@GetMapping("/getDetail")
+	public ModelAndView getDetail(Faq faq) {
+		ModelAndView mv = new ModelAndView("/faq/faqDetail");
+		mv.addObject("faq", faqService.getDetail(faq));
+
+		return mv;
+	}
 }

@@ -31,7 +31,7 @@
 			</tr>
 			<tr th:each="list : ${list}">
 				<td>[[${list.faqSeq}]]</td>
-				<td><a th:href="'/faq/getDetail?faqSeq=${list.faqTitle}'">[[${list.faqTitle}]]</a></td>
+				<td><a th:href="'/faq/getDetail?faqSeq=' + ${list.faqSeq} + ''">[[${list.faqTitle}]]</a></td>
 				<td>[[${list.faqContent}]]</td>
 				<td>[[${list.faqCreatedt.substring(0,10)}]]</td>
 			</tr>
