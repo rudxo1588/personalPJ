@@ -36,5 +36,5 @@ public class FaqImgService {
 	public int insert(FaqImg faqImg) {
 		return faqImgMapper.insert(faqImg);
 	}
-
+	
 }

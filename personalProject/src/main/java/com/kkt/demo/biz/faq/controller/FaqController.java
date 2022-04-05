@@ -59,6 +59,15 @@ public class FaqController {
 	}
 
 	/*
+	 * faq 수정
+	 */
+	@PostMapping("/edit")
+	@ResponseBody
+	public void edit(Faq faq, @RequestParam(value = "file", required = false) List<MultipartFile> file) throws Exception {
+		faqService.edit(faq, file);
+	}
+
+	/*
 	 * faq상세화면
 	 */
 	@GetMapping("/getDetail")

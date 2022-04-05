@@ -65,4 +65,33 @@ public class FaqService {
 		return result;
 	}
 
+	/*
+	 * faq수정
+	 */
+	public int edit(Faq faq, List<MultipartFile> file) throws Exception {
+
+		FileTools fileTools = new FileTools();
+		List<FaqImg> faqImgList = new ArrayList<>();
+
+		if(file != null && file.size() > 0) {
+			for(int i = 0 ; i < file.size(); i++) {
+				if(!file.get(i).isEmpty()) {
+					FaqImg faqImg = new FaqImg();
+					// 파일을 경로에 저장한 후 파일 명을 리턴받음
+					faqImg.setFaqImg(fileTools.insertFile(file.get(i)));
+					faqImg.setImgNm(file.get(i).getOriginalFilename());
+					faqImgList.add(faqImg);
+				}
+			}
+		}
+		int result = faqMapper.insert(faq);
+		faq.setFaqImgList(faqImgList);
+
+		if(result > 0) {
+			faqImgService.insertList(faq, faq.getFaqSeq());
+		}
+
+		return result;
+	}
+
 }
