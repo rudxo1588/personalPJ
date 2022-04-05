@@ -20,12 +20,14 @@
 			 faq_seq
 			,faq_img
 			,del_yn
+			,img_nm
 		)
 		VALUES
 		(
 			 #{faqSeq}
 			,#{faqImg}
 			,'N'
+			,#{imgNm}
 		)
 	</insert>
 

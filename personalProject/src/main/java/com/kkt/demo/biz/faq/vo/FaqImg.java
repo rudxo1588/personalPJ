@@ -9,4 +9,5 @@ public class FaqImg {
 	private int faqSeq;
 	private String faqImg;
 	private String delYn;
+	private String imgNm;
 }

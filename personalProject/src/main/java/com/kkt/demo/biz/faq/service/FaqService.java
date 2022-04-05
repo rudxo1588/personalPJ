@@ -50,6 +50,7 @@ public class FaqService {
 					FaqImg faqImg = new FaqImg();
 					// 파일을 경로에 저장한 후 파일 명을 리턴받음
 					faqImg.setFaqImg(fileTools.insertFile(file.get(i)));
+					faqImg.setImgNm(file.get(i).getOriginalFilename());
 					faqImgList.add(faqImg);
 				}
 			}
