@@ -22,30 +22,102 @@
 	function fnDelFileRow(obj) {
 		$(obj).parent().parent().remove();
 	}
+
+	$.fn.serializeObject = function() {
+	  var result = {}
+	  var extend = function(i, element) {
+	    var node = result[element.name]
+	    if ("undefined" !== typeof node && node !== null) {
+	      if ($.isArray(node)) {
+	        node.push(element.value)
+	      } else {
+	        result[element.name] = [node, element.value]
+	      }
+	    } else {
+	      result[element.name] = element.value
+	    }
+	  }
+
+	  $.each(this.serializeArray(), extend)
+	  return result
+	}
+
+
+	function fnRegBtn() {
+		if($('#faqTitle').val() == '') {
+			alert('제목을 입력해 주세요');
+			$('#faqTitle').focus();
+			return;
+		}
+
+		if($('#faqContent').val() == '') {
+			alert('내용을 입력해 주세요');
+			$('#faqContent').focus();
+			return;
+		}
+
+		var formData = new FormData($('#frm')[0]);
+
+		$.ajax({
+			 url 		: '/faq/edit'
+			,type 		: 'post'
+			,data 		: formData
+			,contentType: false
+			,processData: false
+			,success	: function(res) {
+				alert('저장 성공');
+				location.href = '/faq/list';
+			}
+			,error 		: function(request) {
+				alert(JSON.parse(request.responseText).reason);
+			}
+		})
+	}
+	function fnAddFileRow() {
+		if($('.file').length == 5) {
+			alert('이미지는 최대 다섯개까지 추가 가능합니다.');
+			return;
+		}
+
+		$('#addFileRow').tmpl().appendTo('#faqTable');
+	}
+
+	function fnFileUpload(obj) {
+
+	}
 </script>
 </head>
 <body>
-	<div align="center" th:object="${faq}">
-		<table>
-			<tr>
-				<th>제목</th>
-				<td><input type="text" id="faqTitle" name="faqTitle" th:value="*{faqTitle}"></td>
-			</tr>
-			<tr>
-				<th>내용</th>
-				<td><input type="text" id="faqContent" name="faqContent" th:value="*{faqContent}"></td>
-			</tr>
-			<tr>
-				<td><button type="button" onclick="fnRegBtn()">저장</button></td>
-			</tr>
-			<tr>
-				<td rowspan="6">첨부파일</td>
-				<td th:each="faqImg : ${faq.faqImgList}">
-					<img th:src="'../upload/'+${faqImg.faqImg}+''" style="width: 200px;">
-				</td>
-			</tr>
-		</table>
-	</div>
+	<form>
+		<div align="center" th:object="${faq}">
+			<table id="faqTable">
+				<tr>
+					<th>제목</th>
+					<td><input type="text" id="faqTitle" name="faqTitle" th:value="*{faqTitle}"></td>
+				</tr>
+				<tr>
+					<th>내용</th>
+					<td><input type="text" id="faqContent" name="faqContent" th:value="*{faqContent}"></td>
+				</tr>
+				<tr>
+					<td rowspan="6">첨부파일</td>
+					<td><button type="button" onclick="fnAddFileRow()">+</button></td>
+				</tr>
+				<tr>
+					<td th:each="faqImg, i : ${faq.faqImgList}">
+						<img th:src="'../upload/'+${faqImg.faqImg}+''" style="width: 200px;">
+						<input type="hidden" id="imgSeq" th:name="'faqImgList['+${i.index}+'].imgSeq'">
+						<input class="file" type="file" id="file" name="file" th:value="${faqImg.faqImg}" onclick="fnFileUpload(this)">
+						<label for="file">[[${faqImg.faqImg}]]</label>
+						<button type="button" onclick="fnDelFileRow(this)">-</button>
+					</td>
+				</tr>
+			</table>
+			<div>
+				<button type="button" onclick="fnRegBtn()">저장</button>
+			</div>
+		</div>
+	</form>
 </body>
 <script type="text/x-jQuery-tmpl" id="addFileRow">
 	<tr>
