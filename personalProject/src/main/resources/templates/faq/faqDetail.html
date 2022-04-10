@@ -92,11 +92,12 @@
 			return;
 		}
 		var reader = new FileReader();
-
+		var src = '';
 		reader.onload = function(e) {
 			console.log(e.target.result);
+			src = e.target.result
 		}
-
+		fileReader.readAsDataURL(src);
 
 
 		$('#fileNm'+idx).text(fileNm);
