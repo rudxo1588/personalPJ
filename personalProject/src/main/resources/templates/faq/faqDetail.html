@@ -97,7 +97,12 @@
 			console.log(e.target.result);
 			src = e.target.result
 		}
-		fileReader.readAsDataURL(src);
+
+		reader.addEventListener("load", function () {
+		    console.log(reader.result);
+		  }, false);
+
+// 		reader.readAsDataURL(src);
 
 
 		$('#fileNm'+idx).text(fileNm);
