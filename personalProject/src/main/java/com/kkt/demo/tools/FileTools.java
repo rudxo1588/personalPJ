@@ -14,7 +14,7 @@ public class FileTools {
 	public String insertFile(MultipartFile file) throws Exception {
 		String saveFileNm = "";
 		if(!file.isEmpty()) {
-			String fileNm = file.getOriginalFilename().replaceAll(" ", "");
+			String fileNm = file.getOriginalFilename().replaceAll(" ", "");	// 파일 명에서 공백 제거
 			String regex = "^([\\S]+(\\.(?i)(jpg|jpeg|png|gif|bmp))$)";		// 파일 정규식 체크
 
 			if(!fileNm.matches(regex)) {
