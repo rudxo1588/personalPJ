@@ -83,6 +83,15 @@ public class FaqController {
 	}
 
 	/*
+	 * faq 삭제
+	 */
+	@PostMapping("/delete")
+	@ResponseBody
+	public void delete(Faq faq) throws Exception {
+		faqService.delete(faq);
+	}
+
+	/*
 	 * faqImg 삭제
 	 */
 	@PostMapping("/deleteByImgSeq")

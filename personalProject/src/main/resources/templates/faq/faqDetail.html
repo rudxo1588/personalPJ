@@ -32,6 +32,23 @@
 		}
 	}
 
+	function fnDelBtn(seq) {
+		if(confirm('삭제하시겠습니까?')) {
+			$.ajax({
+				url : '/faq/delete',
+				data : {'faqSeq' : seq},
+				type : 'post',
+				success : function(res) {
+					alert('삭제되었습니다.');
+					location.href = '/faq/list';
+				},
+				error : function() {
+					console.log('에러발생');
+				}
+			});
+		}
+	}
+
 	$.fn.serializeObject = function() {
 	  var result = {}
 	  var extend = function(i, element) {
@@ -145,6 +162,7 @@
 				</tr>
 			</table>
 			<div>
+				<button type="button" th:onclick="|fnDelBtn(*{faqSeq})|">삭제</button>
 				<button type="button" onclick="fnRegBtn()">저장</button>
 			</div>
 		</div>

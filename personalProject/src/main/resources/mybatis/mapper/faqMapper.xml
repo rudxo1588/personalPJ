@@ -59,7 +59,7 @@
 	<update id="delete" parameterType="com.kkt.demo.biz.faq.vo.Faq">
 		/* FaqMapper.update */
 		update faq set
-			,faq_del_yn		= 'Y'
+			faq_del_yn		= 'Y'
 		where faq_seq 		= #{faqSeq}
 	</update>
 

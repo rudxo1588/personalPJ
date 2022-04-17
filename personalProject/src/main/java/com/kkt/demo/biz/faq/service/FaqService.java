@@ -66,6 +66,13 @@ public class FaqService {
 	}
 
 	/*
+	 * faq삭제
+	 */
+	public int delete(Faq faq) {
+		return faqMapper.delete(faq);
+	}
+
+	/*
 	 * faq수정
 	 */
 	public int edit(Faq faq, List<MultipartFile> file) throws Exception {
