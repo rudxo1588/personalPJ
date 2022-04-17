@@ -10,4 +10,5 @@ public class FaqImg {
 	private String faqImg;
 	private String delYn;
 	private String imgNm;
+	private String fileChangeYn;
 }

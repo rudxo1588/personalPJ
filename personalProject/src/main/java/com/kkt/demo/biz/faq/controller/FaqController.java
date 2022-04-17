@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.kkt.demo.biz.faq.service.FaqImgService;
 import com.kkt.demo.biz.faq.service.FaqService;
 import com.kkt.demo.biz.faq.vo.Faq;
+import com.kkt.demo.biz.faq.vo.FaqImg;
 import com.kkt.demo.tools.FileTools;
 
 import lombok.RequiredArgsConstructor;
@@ -27,6 +29,8 @@ import lombok.RequiredArgsConstructor;
 public class FaqController {
 
 	private final FaqService faqService;
+
+	private final FaqImgService faqImgService;
 
 	/*
 	 * faq리스트 조회
@@ -76,5 +80,14 @@ public class FaqController {
 		mv.addObject("faq", faqService.getDetail(faq));
 
 		return mv;
+	}
+
+	/*
+	 * faqImg 삭제
+	 */
+	@PostMapping("/deleteByImgSeq")
+	@ResponseBody
+	public void deleteByImgSeq(FaqImg faqImg) throws Exception {
+		faqImgService.delete(faqImg);
 	}
 }

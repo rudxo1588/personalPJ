@@ -25,6 +25,7 @@ public class FaqImgService {
 		if(list != null) {
 			for(FaqImg vo : list) {
 				vo.setFaqSeq(faqSeq);
+				vo.setDelYn("N");
 				this.insert(vo);
 			}
 		}
@@ -36,5 +37,15 @@ public class FaqImgService {
 	public int insert(FaqImg faqImg) {
 		return faqImgMapper.insert(faqImg);
 	}
-	
+
+	/*
+	 * faqImg 삭제
+	 */
+	public int delete(FaqImg faqImg) {
+		faqImg.setDelYn("Y");
+		return faqImgMapper.delete(faqImg);
+	}
+
+
+
 }
