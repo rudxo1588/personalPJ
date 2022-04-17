@@ -52,14 +52,24 @@ public class FaqController {
 		return mv;
 	}
 
+//	/*
+//	 * faq 등록
+//	 */
+//	@PostMapping("/add")
+//	@ResponseBody
+//	public void add(@Valid Faq faq, @RequestParam(value = "file", required = false) List<MultipartFile> file) throws Exception {
+//
+//		faqService.add(faq, file);
+//	}
+
 	/*
 	 * faq 등록
 	 */
 	@PostMapping("/add")
 	@ResponseBody
-	public void add(Faq faq, @RequestParam(value = "file", required = false) List<MultipartFile> file) throws Exception {
-
-		faqService.add(faq, file);
+	public void add(@Valid Faq faq) throws Exception {
+		System.out.println(faq);
+		faqService.add(faq);
 	}
 
 	/*
@@ -67,8 +77,8 @@ public class FaqController {
 	 */
 	@PostMapping("/edit")
 	@ResponseBody
-	public void edit(Faq faq, @RequestParam(value = "file", required = false) List<MultipartFile> file) throws Exception {
-		faqService.edit(faq, file);
+	public void edit(Faq faq) throws Exception {
+		faqService.edit(faq);
 	}
 
 	/*

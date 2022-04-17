@@ -1,5 +1,7 @@
 package com.kkt.demo.biz.faq.vo;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import lombok.Data;
 
 @Data
@@ -10,5 +12,6 @@ public class FaqImg {
 	private String faqImg;
 	private String delYn;
 	private String imgNm;
-	private String fileChangeYn;
+
+	private MultipartFile imgFile;
 }

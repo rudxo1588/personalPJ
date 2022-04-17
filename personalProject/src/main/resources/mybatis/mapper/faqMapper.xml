@@ -51,7 +51,6 @@
 		update faq set
 			 faq_title 		= #{faqTitle}
 			,faq_content 	= #{faqContent}
-			,faq_del_yn		= #{faqDelYn}
 		where faq_seq 		= #{faqSeq}
 	</update>
 

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.kkt.demo.biz.faq.mapper.FaqImgMapper;
@@ -36,30 +37,60 @@ public class FaqService {
 		return faqMapper.getDetail(faq);
 	}
 
+//	/*
+//	 * faq저장
+//	 */
+//	public int add(Faq faq, List<MultipartFile> file) throws Exception {
+//
+//		FileTools fileTools = new FileTools();
+//		List<FaqImg> faqImgList = new ArrayList<>();
+//
+//		if(file != null && file.size() > 0) {
+//			for(int i = 0 ; i < file.size(); i++) {
+//				if(!file.get(i).isEmpty()) {
+//					FaqImg faqImg = new FaqImg();
+//					// 파일을 경로에 저장한 후 파일 명을 리턴받음
+//					faqImg.setFaqImg(fileTools.insertFile(file.get(i)));
+//					faqImg.setImgNm(file.get(i).getOriginalFilename());
+//					faqImgList.add(faqImg);
+//				}
+//			}
+//		}
+//		int result = faqMapper.insert(faq);
+//		faq.setFaqImgList(faqImgList);
+//
+//		if(result > 0) {
+//			faqImgService.insertList(faq, faq.getFaqSeq());
+//		}
+//
+//		return result;
+//	}
+
 	/*
-	 * faq저장
+	 * faq저장]
 	 */
-	public int add(Faq faq, List<MultipartFile> file) throws Exception {
+	@Transactional
+	public int add(Faq faq) throws Exception {
 
-		FileTools fileTools = new FileTools();
-		List<FaqImg> faqImgList = new ArrayList<>();
+		List<FaqImg> faqImgFile = new ArrayList<>();
+		List<FaqImg> faqImgList = faq.getFaqImgList();
 
-		if(file != null && file.size() > 0) {
-			for(int i = 0 ; i < file.size(); i++) {
-				if(!file.get(i).isEmpty()) {
+		if(faqImgList != null && faqImgList.size() > 0) {
+			for(int i = 0 ; i < faqImgList.size(); i++) {
+				if(!faqImgList.get(i).getImgFile().isEmpty()) {
 					FaqImg faqImg = new FaqImg();
 					// 파일을 경로에 저장한 후 파일 명을 리턴받음
-					faqImg.setFaqImg(fileTools.insertFile(file.get(i)));
-					faqImg.setImgNm(file.get(i).getOriginalFilename());
-					faqImgList.add(faqImg);
+					faqImg.setFaqImg(FileTools.insertFile(faqImgList.get(i).getImgFile()));
+					faqImg.setImgNm(faqImgList.get(i).getImgFile().getOriginalFilename());
+					faqImgFile.add(faqImg);
 				}
 			}
 		}
+
 		int result = faqMapper.insert(faq);
-		faq.setFaqImgList(faqImgList);
 
 		if(result > 0) {
-			faqImgService.insertList(faq, faq.getFaqSeq());
+			faqImgService.insertList(faqImgFile, faq.getFaqSeq());
 		}
 
 		return result;
@@ -68,6 +99,7 @@ public class FaqService {
 	/*
 	 * faq삭제
 	 */
+	@Transactional
 	public int delete(Faq faq) {
 		return faqMapper.delete(faq);
 	}
@@ -75,46 +107,25 @@ public class FaqService {
 	/*
 	 * faq수정
 	 */
-	public int edit(Faq faq, List<MultipartFile> file) throws Exception {
+	@Transactional
+	public int edit(Faq faq) throws Exception {
 
-		FileTools fileTools = new FileTools();
 		List<FaqImg> faqImgList = faq.getFaqImgList();
+		faqImgService.deleteByFaqSeq(faq.getFaqSeq());
 
-		List<FaqImg> fileFaqImgList = new ArrayList<FaqImg>();
-		FaqImg faqImg = new FaqImg();
-
-		// 파일이 바뀌지않았으면 재 인서트 목록에서 제외시킨다.
-		if(faqImgList != null) {
-			for(FaqImg vo : faqImgList) {
-				if("Y".equals(vo.getFileChangeYn())) {
-					fileFaqImgList.add(vo);
-
-					// 파일 변경시 삭제
-					if(vo.getImgSeq() != 0) {
-						faqImgService.delete(vo);
-					}
+		if (faqImgList != null && faqImgList.size() > 0) {
+			for (FaqImg vo : faqImgList) {
+				if (!vo.getImgFile().isEmpty()) {
+					vo.setFaqImg(FileTools.insertFile(vo.getImgFile()));
+					vo.setImgNm(vo.getImgFile().getOriginalFilename());
 				}
 			}
 		}
 
-		faqImgList = new ArrayList<FaqImg>();
-		// 바뀐 파일과 새로 추가된 파일에 대해서만 vo에 담아서 인서트
-		for(int i = 0 ; i < file.size(); i++) {
-			if(!file.get(i).isEmpty()) {
-				faqImg = new FaqImg();
-				// 파일을 경로에 저장한 후 파일 명을 리턴받음
-				faqImg.setFaqImg(fileTools.insertFile(file.get(i)));
-				faqImg.setImgNm(file.get(i).getOriginalFilename());
-				faqImgList.add(faqImg);
-			}
-		}
-
-		faq.setFaqDelYn("N");
 		int result = faqMapper.update(faq);
 
-		faq.setFaqImgList(faqImgList);
 		if(result > 0) {
-			faqImgService.insertList(faq, faq.getFaqSeq());
+			faqImgService.insertList(faqImgList, faq.getFaqSeq());
 		}
 
 		return result;

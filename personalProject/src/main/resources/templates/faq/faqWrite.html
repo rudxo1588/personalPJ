@@ -27,17 +27,20 @@
 
 
 	function fnRegBtn() {
-		if($('#faqTitle').val() == '') {
-			alert('제목을 입력해 주세요');
-			$('#faqTitle').focus();
-			return;
-		}
+// 		if($('#faqTitle').val() == '') {
+// 			alert('제목을 입력해 주세요');
+// 			$('#faqTitle').focus();
+// 			return;
+// 		}
 
-		if($('#faqContent').val() == '') {
-			alert('내용을 입력해 주세요');
-			$('#faqContent').focus();
-			return;
-		}
+// 		if($('#faqContent').val() == '') {
+// 			alert('내용을 입력해 주세요');
+// 			$('#faqContent').focus();
+// 			return;
+// 		}
+		$('.file').each(function(v) {
+			$(this).prop('name', 'faqImgList['+v+'].imgFile');
+		})
 
 		var formData = new FormData($('#frm')[0]);
 

@@ -49,26 +49,6 @@
 		}
 	}
 
-	$.fn.serializeObject = function() {
-	  var result = {}
-	  var extend = function(i, element) {
-	    var node = result[element.name]
-	    if ("undefined" !== typeof node && node !== null) {
-	      if ($.isArray(node)) {
-	        node.push(element.value)
-	      } else {
-	        result[element.name] = [node, element.value]
-	      }
-	    } else {
-	      result[element.name] = element.value
-	    }
-	  }
-
-	  $.each(this.serializeArray(), extend)
-	  return result
-	}
-
-
 	function fnRegBtn() {
 		if($('#faqTitle').val() == '') {
 			alert('제목을 입력해 주세요');
@@ -81,6 +61,18 @@
 			$('#faqContent').focus();
 			return;
 		}
+
+		$('.file').each(function(v) {
+			$(this).prop('name','faqImgList['+v+'].imgFile');
+		})
+
+		$('.faqImg').each(function(v) {
+			$(this).prop('name','faqImgList['+v+'].faqImg');
+		})
+
+		$('.imgNm').each(function(v) {
+			$(this).prop('name','faqImgList['+v+'].imgNm');
+		})
 
 		var formData = new FormData($('#frm')[0]);
 
@@ -118,7 +110,6 @@
 			return;
 		}
 
-		$('#fileChangeYn'+idx).val('Y');
 		var reader = new FileReader();
 		var src = '';
 		reader.onload = function(e) {
@@ -153,8 +144,8 @@
 				<tr th:each="faqImg, i : ${faq.faqImgList}">
 					<td >
 						<img th:src="'../upload/'+${faqImg.faqImg}+''" style="width: 200px;">
-						<input type="hidden" th:id="'imgSeq'+${i.index}+''" th:name="'faqImgList['+${i.index}+'].imgSeq'" th:value="${faqImg.imgSeq}">
-						<input type="hidden" th:id="'fileChangeYn'+${i.index}+''" th:name="'faqImgList['+${i.index}+'].fileChangeYn'">
+						<input type="hidden" th:id="'faqImg'+${i.index}+''" class="faqImg" th:name="'faqImgList['+${i.index}+'].faqImg'" th:value="${faqImg.faqImg}">
+						<input type="hidden" th:id="'imgNm'+${i.index}+''" class="imgNm" th:name="'faqImgList['+${i.index}+'].imgNm'" th:value="${faqImg.imgNm}">
 						<input class="file" type="file" th:id="'file'+${i.index}+''" name="file" style="display:none;" th:onchange="'fnFileUpload(this,'+${i.index}+')'" accept=".gif, .jpg, .png, .jpeg">
 						<label th:for="'file'+${i.index}+''" th:id="'fileNm'+${i.index}+''">[[${faqImg.imgNm}]]</label>
 						<button type="button" th:onclick="|fnDelFileRow(${faqImg.imgSeq})|">-</button>
@@ -171,8 +162,8 @@
 <script type="text/x-jQuery-tmpl" id="addFileRow">
 	<tr>
 		<td>
-			<input type="hidden" id="imgSeq" name="faqImgList[{{= idx}}].imgSeq" value="0">
-			<input type="hidden" id="fileChangeYn{{= idx}}" name="faqImgList[{{= idx}}].fileChangeYn" value="Y">
+			<input type="hidden" id="imgSeq" class="faqImg" name="faqImgList[{{= idx}}].faqImg">
+			<input type="hidden" id="imgNm{{= idx}}" class="imgNm" name="faqImgList[{{= idx}}].imgNm">
 			<input type="file" name="file" id="file{{= idx}}" class="file" style="display:none;" onchange="fnFileUpload(this, {{= idx}})" accept=".gif, .jpg, .png, .jpeg">
 			<label for="file{{= idx}}" id="fileNm{{= idx}}">선택된 파일 없음</label>
 			<button type="button" onclick="fnDelFileRow(this)">삭제</button>

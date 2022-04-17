@@ -34,7 +34,8 @@
 	<!-- faqImg 삭제 -->
 	<update id="deleteByFaqSeq" parameterType="com.kkt.demo.biz.faq.vo.FaqImg">
 		/* FaqImgMapper.update */
-		DELETE FROM faq_img
+		UPDATE faq_img SET
+			del_yn = 'Y'
 		WHERE faq_seq = #{faqSeq}
 	</update>
 
@@ -42,7 +43,7 @@
 	<update id="delete" parameterType="com.kkt.demo.biz.faq.vo.FaqImg">
 		/* FaqImgMapper.delete */
 		UPDATE faq_img SET
-			del_yn = #{delYn}
+			del_yn = 'Y'
 		WHERE img_seq = #{imgSeq}
 	</update>
 

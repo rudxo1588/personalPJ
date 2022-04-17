@@ -11,7 +11,7 @@ public class FileTools {
 	 * file 저장 공통화
 	 * return : fileName
 	 */
-	public String insertFile(MultipartFile file) throws Exception {
+	public static String insertFile(MultipartFile file) throws Exception {
 		String saveFileNm = "";
 		if(!file.isEmpty()) {
 			String fileNm = file.getOriginalFilename().replaceAll(" ", "");	// 파일 명에서 공백 제거

@@ -19,13 +19,11 @@ public class FaqImgService {
 	/*
 	 * faqImg리스트 저장
 	 */
-	public void insertList(Faq faq, int faqSeq) {
-		List<FaqImg> list = faq.getFaqImgList();
+	public void insertList(List<FaqImg> list, int faqSeq) {
 
 		if(list != null) {
 			for(FaqImg vo : list) {
 				vo.setFaqSeq(faqSeq);
-				vo.setDelYn("N");
 				this.insert(vo);
 			}
 		}
@@ -44,6 +42,10 @@ public class FaqImgService {
 	public int delete(FaqImg faqImg) {
 		faqImg.setDelYn("Y");
 		return faqImgMapper.delete(faqImg);
+	}
+
+	public int deleteByFaqSeq(int faqSeq) {
+		return faqImgMapper.deleteByFaqSeq(faqSeq);
 	}
 
 

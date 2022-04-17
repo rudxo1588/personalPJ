@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.kkt.demo.biz.faq.vo.Faq;
 import com.kkt.demo.biz.faq.vo.FaqImg;
 
 @Mapper
@@ -20,6 +21,6 @@ public interface FaqImgMapper {
 	int insert(FaqImg faqImg);
 
 	// faqimg 삭제
-	int deleteByFaqSeq(FaqImg faqImg);
+	int deleteByFaqSeq(int faqSeq);
 
 }
