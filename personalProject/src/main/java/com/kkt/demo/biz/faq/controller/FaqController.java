@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.kkt.demo.biz.faq.service.FaqImgCrudService;
 import com.kkt.demo.biz.faq.service.FaqImgService;
 import com.kkt.demo.biz.faq.service.FaqService;
 import com.kkt.demo.biz.faq.vo.Faq;
@@ -65,11 +66,10 @@ public class FaqController {
 	/*
 	 * faq 등록
 	 */
-	@PostMapping("/add")
+	@PostMapping("save")
 	@ResponseBody
 	public void add(@Valid Faq faq) throws Exception {
-		System.out.println(faq);
-		faqService.add(faq);
+		faqService.save(faq);
 	}
 
 	/*

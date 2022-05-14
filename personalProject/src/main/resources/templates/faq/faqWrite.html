@@ -38,14 +38,16 @@
 // 			$('#faqContent').focus();
 // 			return;
 // 		}
-		$('.file').each(function(v) {
-			$(this).prop('name', 'faqImgList['+v+'].imgFile');
-		})
+		$('.imgTd').each(function(v) {
+			$(this).children('.file').prop('name', 'faqImgList['+v+'].imgFile');
+			$(this).children('.crudMode').prop('name', 'faqImgList['+v+'].crudMode');
+			$(this).children('.imgTitle').prop('name', 'faqImgList['+v+'].imgTitle');
+		});
 
 		var formData = new FormData($('#frm')[0]);
 
 		$.ajax({
-			 url 		: '/faq/add'
+			 url 		: '/faq/save'
 			,type 		: 'post'
 			,data 		: formData
 			,contentType: false
@@ -57,7 +59,7 @@
 			,error 		: function(request) {
 				alert(JSON.parse(request.responseText).reason);
 			}
-		})
+		});
 	}
 
 	function fnDelFileRow(obj) {
@@ -99,7 +101,9 @@
 </body>
 <script type="text/x-jQuery-tmpl" id="addFileRow">
 	<tr>
-		<td>
+		<td class="imgTd">
+			<input type="hidden" name="crudMode" class="crudMode" value="C">
+			<input type="text" name="imgTitle" class="imgTitle">
 			<input type="file" name="file" id="file" class="file">
 			<button type="button" onclick="fnDelFileRow(this)">-</button>
 		</td>

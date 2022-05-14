@@ -4,10 +4,12 @@ import java.util.List;
 
 import javax.validation.constraints.NotBlank;
 
+import com.kkt.demo.util.vo.BaseVo;
+
 import lombok.Data;
 
 @Data
-public class Faq {
+public class Faq extends BaseVo {
 
 	private int FaqSeq;
 

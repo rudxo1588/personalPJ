@@ -21,6 +21,9 @@
 			,faq_img
 			,del_yn
 			,img_nm
+			,img_title
+			,rgstr_id
+			,rgst_dt
 		)
 		VALUES
 		(
@@ -28,14 +31,32 @@
 			,#{faqImg}
 			,'N'
 			,#{imgNm}
+			,#{imgTitle}
+			,#{rgstrId}
+			,SYSDATE()
 		)
 	</insert>
+
+	<update id="update" parameterType="com.kkt.demo.biz.faq.vo.FaqImg">
+		/* FaqImgMapper.update */
+		UPDATE faq_img
+		SET
+			 faq_seq 	= 	#{faqSeq}
+			,img_title  =	#{imgTitle}
+			,faq_img	= 	#{faqImg}
+			,img_nm		=	#{imgNm}
+			,modr_id	=	#{modrId}
+			,mod_dt		= 	SYSDATE()
+		WHERE img_seq 	=	#{imgSeq}
+	</update>
 
 	<!-- faqImg 삭제 -->
 	<update id="deleteByFaqSeq" parameterType="com.kkt.demo.biz.faq.vo.FaqImg">
 		/* FaqImgMapper.update */
 		UPDATE faq_img SET
-			del_yn = 'Y'
+			 del_yn = 'Y'
+			,modr_id	=	#{modrId}
+			,mod_dt		= 	SYSDATE()
 		WHERE faq_seq = #{faqSeq}
 	</update>
 
@@ -43,7 +64,9 @@
 	<update id="delete" parameterType="com.kkt.demo.biz.faq.vo.FaqImg">
 		/* FaqImgMapper.delete */
 		UPDATE faq_img SET
-			del_yn = 'Y'
+			 del_yn = 'Y'
+			,modr_id	=	#{modrId}
+			,mod_dt		= 	SYSDATE()
 		WHERE img_seq = #{imgSeq}
 	</update>
 

@@ -23,4 +23,6 @@ public interface FaqImgMapper {
 	// faqimg 삭제
 	int deleteByFaqSeq(int faqSeq);
 
+	int update(FaqImg faqImg);
+
 }

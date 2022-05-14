@@ -6,32 +6,19 @@
 <script type="text/javascript" src="../js/jquery.tmpl.min.js"></script>
 <title>FAQ 목록</title>
 <script>
-	function fnAddFileRow() {
-		if($('.file').length == 5) {
-			alert('이미지는 최대 다섯개까지 추가 가능합니다.');
-			return;
-		}
+	function fnDelFileRow(obj) {
+		let crudMode = $(obj).parent().children('.crudMode');
 
-		$('#addFileRow').tmpl().appendTo('#faqTable');
-	}
-
-	function fnDelFileRow(seq) {
-		if(confirm('삭제하시겠습니까?')) {
-			$.ajax({
-				url : '/faq/deleteByImgSeq',
-				data : {'imgSeq' : seq},
-				type : 'post',
-				success : function(res) {
-					alert('삭제되었습니다.');
-					location.reload();
-				},
-				error : function() {
-					console.log('에러발생');
-				}
-			});
+		if(crudMode.val() == 'R' || crudMode.val() == 'U') {
+			crudMode.val('D');
+			$(obj).closest('tr').hide();
+			$(obj).closest('td').removeClass();
+		} else {
+			$(obj).parent('tr').remove();
 		}
 	}
 
+	// faq삭제
 	function fnDelBtn(seq) {
 		if(confirm('삭제하시겠습니까?')) {
 			$.ajax({
@@ -62,17 +49,14 @@
 			return;
 		}
 
-		$('.file').each(function(v) {
-			$(this).prop('name','faqImgList['+v+'].imgFile');
-		})
-
-		$('.faqImg').each(function(v) {
-			$(this).prop('name','faqImgList['+v+'].faqImg');
-		})
-
-		$('.imgNm').each(function(v) {
-			$(this).prop('name','faqImgList['+v+'].imgNm');
-		})
+		$('.imgTr').each(function(v) {
+			$(this).children().find('.file').attr('name', 'faqImgList['+v+'].imgFile');
+			$(this).children().find('.crudMode').attr('name', 'faqImgList['+v+'].crudMode');
+			$(this).children().find('.imgTitle').attr('name', 'faqImgList['+v+'].imgTitle');
+			$(this).children().find('.faqImg').attr('name', 'faqImgList['+v+'].faqImg');
+			$(this).children().find('.imgNm').attr('name', 'faqImgList['+v+'].imgNm');
+			$(this).children().find('.imgSeq').attr('name', 'faqImgList['+v+'].imgSeq');
+		});
 
 		var formData = new FormData($('#frm')[0]);
 
@@ -84,15 +68,17 @@
 			,processData: false
 			,success	: function(res) {
 				alert('저장 성공');
-				location.href = '/faq/list';
+				location.reload();
 			}
 			,error 		: function(request) {
 				alert(JSON.parse(request.responseText).reason);
 			}
-		})
+		});
 	}
+
+	// 이미지 파일 로우 추가
 	function fnAddFileRow() {
-		if($('.file').length == 5) {
+		if($('.imgTd').length == 5) {
 			alert('이미지는 최대 다섯개까지 추가 가능합니다.');
 			return;
 		}
@@ -100,7 +86,9 @@
 		$('#addFileRow').tmpl([{idx : $('.file').length}]).appendTo('#faqTable');
 	}
 
+	// 이미지 유효성체크
 	function fnFileUpload(obj, idx) {
+		let crudMode = $(obj).parent().children('.crudMode');
 		let fileNm = $(obj).val().split('/').pop().split('\\').pop();
 		let _ext = fileNm.lastIndexOf('.')+1;
 
@@ -110,17 +98,17 @@
 			return;
 		}
 
-		var reader = new FileReader();
-		var src = '';
-		reader.onload = function(e) {
-			console.log(e.target.result);
-			src = e.target.result
+		$(obj).closest('td').find('.img').remove();
+		if(crudMode.val() == 'R') {
+			crudMode.val('U');
 		}
 
-// 		reader.readAsDataURL(src);
-
-
 		$('#fileNm'+idx).text(fileNm);
+	}
+
+	// 이미지 타이틀 변경시 U 원래값으로 다시 변경시 R
+	function fnTtlChange(obj) {
+		$(obj).parent().children('.crudMode').val('U');
 	}
 </script>
 </head>
@@ -138,17 +126,20 @@
 					<td><input type="text" id="faqContent" name="faqContent" th:value="*{faqContent}"></td>
 				</tr>
 				<tr>
-					<td rowspan="6">첨부파일</td>
+					<td rowspan="12">첨부파일</td>
 					<td><button type="button" onclick="fnAddFileRow()">추가</button></td>
 				</tr>
-				<tr th:each="faqImg, i : ${faq.faqImgList}">
-					<td >
-						<img th:src="'../upload/'+${faqImg.faqImg}+''" style="width: 200px;">
-						<input type="hidden" th:id="'faqImg'+${i.index}+''" class="faqImg" th:name="'faqImgList['+${i.index}+'].faqImg'" th:value="${faqImg.faqImg}">
-						<input type="hidden" th:id="'imgNm'+${i.index}+''" class="imgNm" th:name="'faqImgList['+${i.index}+'].imgNm'" th:value="${faqImg.imgNm}">
+				<tr th:each="faqImg, i : ${faq.faqImgList}" class="imgTr">
+					<td class="imgTd">
+						<img class="img" th:src="'../upload/'+${faqImg.faqImg}+''" style="width: 200px;">
+						<input type="hidden" class="crudMode" value="R">
+						<input type="hidden" class="imgSeq" th:value="${faqImg.imgSeq}">
+						<input type="hidden" class="faqImg" th:value="${faqImg.faqImg}">
+						<input type="hidden" class="imgNm" th:value="${faqImg.imgNm}">
+						<input type="text" class="imgTitle" th:value="${faqImg.imgTitle}" onchange="fnTtlChange(this)">
 						<input class="file" type="file" th:id="'file'+${i.index}+''" name="file" style="display:none;" th:onchange="'fnFileUpload(this,'+${i.index}+')'" accept=".gif, .jpg, .png, .jpeg">
 						<label th:for="'file'+${i.index}+''" th:id="'fileNm'+${i.index}+''">[[${faqImg.imgNm}]]</label>
-						<button type="button" th:onclick="|fnDelFileRow(${faqImg.imgSeq})|">-</button>
+						<button type="button" onclick="fnDelFileRow(this)">-</button>
 					</td>
 				</tr>
 			</table>
@@ -160,11 +151,11 @@
 	</form>
 </body>
 <script type="text/x-jQuery-tmpl" id="addFileRow">
-	<tr>
-		<td>
-			<input type="hidden" id="imgSeq" class="faqImg" name="faqImgList[{{= idx}}].faqImg">
-			<input type="hidden" id="imgNm{{= idx}}" class="imgNm" name="faqImgList[{{= idx}}].imgNm">
-			<input type="file" name="file" id="file{{= idx}}" class="file" style="display:none;" onchange="fnFileUpload(this, {{= idx}})" accept=".gif, .jpg, .png, .jpeg">
+	<tr class="imgTr">
+		<td class="imgTd">
+			<input type="hidden" class="crudMode" value="C">
+			<input type="text" class="imgTitle">
+			<input type="file" id="file{{= idx}}" class="file" style="display:none;" onchange="fnFileUpload(this, {{= idx}})" accept=".gif, .jpg, .png, .jpeg">
 			<label for="file{{= idx}}" id="fileNm{{= idx}}">선택된 파일 없음</label>
 			<button type="button" onclick="fnDelFileRow(this)">삭제</button>
 		</td>
