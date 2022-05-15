@@ -54,6 +54,12 @@ public class FaqService {
 		return result;
 	}
 
+	public void addList(List<Faq> faqList) throws Exception {
+		for (Faq vo : faqList) {
+			this.save(vo);
+		}
+	}
+
 	/*
 	 * faq삭제
 	 */

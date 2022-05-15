@@ -22,6 +22,7 @@
 	function fnDelBtn(seq) {
 		if(confirm('삭제하시겠습니까?')) {
 			$.ajax({
+
 				url : '/faq/delete',
 				data : {'faqSeq' : seq},
 				type : 'post',

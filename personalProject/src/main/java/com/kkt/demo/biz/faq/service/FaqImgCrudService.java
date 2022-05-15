@@ -41,7 +41,8 @@ public class FaqImgCrudService {
 	}
 
 	// 이미지 파일 입혀주기
-	public List<FaqImg> setImgInfo(List<FaqImg> list) throws Exception {
+	public List<FaqImg> saveFile(List<FaqImg> list) throws Exception {
+
 		if(list != null && list.size() > 0) {
 			for (FaqImg vo : list) {
 				if (!vo.getImgFile().isEmpty()) {
@@ -58,15 +59,17 @@ public class FaqImgCrudService {
 	public void saveList(Faq faq) throws Exception {
 
 		List<FaqImg> list = faq.getFaqImgList();
-		list = this.setImgInfo(list);
+		list = this.saveFile(list);
 
 		log.debug("==========================start======================================");
 		if(list != null && list.size() > 0) {
 			for (FaqImg vo : list) {
+
 				vo.setFaqSeq(faq.getFaqSeq());
 				vo.setRgstrId(faq.getRgstrId());
 				vo.setModrId(faq.getModrId());
 				log.debug(vo.getCrudMode());
+
 				// update
 				if(StringUtils.equalsIgnoreCase("U", vo.getCrudMode())) {
 					this.update(vo);

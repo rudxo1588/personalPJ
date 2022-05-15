@@ -1,30 +1,30 @@
 package com.kkt.demo.biz.faq.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
-import org.apache.ibatis.annotations.Param;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.kkt.demo.biz.faq.service.FaqImgCrudService;
 import com.kkt.demo.biz.faq.service.FaqImgService;
 import com.kkt.demo.biz.faq.service.FaqService;
 import com.kkt.demo.biz.faq.vo.Faq;
 import com.kkt.demo.biz.faq.vo.FaqImg;
 import com.kkt.demo.biz.user.vo.User;
-import com.kkt.demo.tools.FileTools;
 
 import lombok.RequiredArgsConstructor;
 
@@ -98,7 +98,6 @@ public class FaqController {
 	public ModelAndView getDetail(Faq faq) {
 		ModelAndView mv = new ModelAndView("/faq/faqDetail");
 		mv.addObject("faq", faqService.getDetail(faq));
-
 		return mv;
 	}
 
@@ -118,5 +117,35 @@ public class FaqController {
 	@ResponseBody
 	public void deleteByImgSeq(FaqImg faqImg) throws Exception {
 		faqImgService.delete(faqImg);
+	}
+
+	@PostMapping("/excel/upload")
+	public String excelUpload(@RequestParam(value = "excel", required = false) MultipartFile file , HttpSession session) throws Exception {
+
+		User user = (User)session.getAttribute("user");
+
+		@SuppressWarnings("resource")
+		Workbook workbook = new XSSFWorkbook(file.getInputStream());
+		List<Faq> faqList = new ArrayList<>();
+
+		Sheet worksheet = workbook.getSheetAt(0);
+
+		for(int i = 1; i<worksheet.getPhysicalNumberOfRows(); i++) {
+
+			Row row = worksheet.getRow(i);
+
+			Faq vo = new Faq();
+			vo.setFaqTitle(row.getCell(0).getStringCellValue());
+			vo.setFaqContent(row.getCell(1).getStringCellValue());
+			vo.setRgstrId(user.getId());
+			vo.setModrId(user.getId());
+
+			faqList.add(vo);
+		}
+
+		faqService.addList(faqList);
+
+
+		return "faq/faqList";
 	}
 }

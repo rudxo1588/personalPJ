@@ -8,6 +8,25 @@
 	function fnRegBtn() {
 		location.href = '/faq/add';
 	}
+
+	function fnExcelUpload() {
+
+		var formData = new FormData($('#excelFrm')[0]);
+		$.ajax({
+			 url 		: '/faq/excel/upload'
+			,type 		: 'post'
+			,data 		: formData
+			,contentType: false
+			,processData: false
+			,success	: function(res) {
+				alert('업로드 성공');
+				location.reload();
+			}
+			,error 		: function(request) {
+				alert(JSON.parse(request.responseText).reason);
+			}
+		});
+	}
 </script>
 <style>
 	a { text-decoration:none !important }
@@ -16,31 +35,39 @@
 </head>
 <body>
 	<div align="center">
-		<table>
-			<colgroup>
-				<col width="50px">
-				<col width="200px">
-				<col width="200px">
-				<col width="100px">
-			</colgroup>
-			<tr>
-				<th>번호</th>
-				<th>제목</th>
-				<th>내용</th>
-				<th>등록일</th>
-			</tr>
-			<tr th:each="list : ${list}">
-				<td>[[${list.faqSeq}]]</td>
-				<td><a th:href="'/faq/getDetail?faqSeq=' + ${list.faqSeq} + ''">[[${list.faqTitle}]]</a></td>
-				<td>[[${list.faqContent}]]</td>
-				<td>[[${list.rgstDt}]]</td>
-			</tr>
-			<tr>
-				<td colspan="4" style="text-align: right;">
-					<button type="button" onclick="fnRegBtn()">등록</button>
-				</td>
-			</tr>
-		</table>
+		<form name="excelFrm" id="excelFrm">
+			<table>
+				<colgroup>
+					<col width="50px">
+					<col width="200px">
+					<col width="200px">
+					<col width="100px">
+				</colgroup>
+				<tr>
+					<th>번호</th>
+					<th>제목</th>
+					<th>내용</th>
+					<th>등록일</th>
+				</tr>
+				<tr th:each="list : ${list}">
+					<td>[[${list.faqSeq}]]</td>
+					<td><a th:href="'/faq/getDetail?faqSeq=' + ${list.faqSeq} + ''">[[${list.faqTitle}]]</a></td>
+					<td>[[${list.faqContent}]]</td>
+					<td>[[${list.rgstDt}]]</td>
+				</tr>
+				<tr>
+					<td colspan="4">
+						<input type="file" name="excel" id="excel">엑셀 업로드
+						<button type="button" onclick="fnExcelUpload()">제출</button>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="4" style="text-align: right;">
+						<button type="button" onclick="fnRegBtn()">등록</button>
+					</td>
+				</tr>
+			</table>
+		</form>
 	</div>
 </body>
 </html>
