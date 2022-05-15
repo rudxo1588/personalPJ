@@ -15,4 +15,6 @@ public class BaseVo {
 
 	private LocalDate modDt;
 
+	private String crudMode;
+
 }

@@ -10,8 +10,10 @@ import com.kkt.demo.biz.faq.vo.FaqImg;
 import com.kkt.demo.tools.FileTools;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class FaqImgCrudService {
 
@@ -38,7 +40,7 @@ public class FaqImgCrudService {
 	}
 
 	// 이미지 파일 입혀주기
-	public List<FaqImg> getImg(List<FaqImg> list) throws Exception {
+	public List<FaqImg> setImgInfo(List<FaqImg> list) throws Exception {
 		if(list != null && list.size() > 0) {
 			for (FaqImg vo : list) {
 				if (!vo.getImgFile().isEmpty()) {
@@ -54,14 +56,13 @@ public class FaqImgCrudService {
 	// crudMode에 따라서 각각 CRUD실행
 	public void saveList(Integer faqSeq, List<FaqImg> list) throws Exception {
 
-		list = this.getImg(list);
+		list = this.setImgInfo(list);
 
-		System.out.println("==========================start======================================");
+		log.debug("==========================start======================================");
 		if(list != null && list.size() > 0) {
 			for (FaqImg vo : list) {
 				vo.setFaqSeq(faqSeq);
-				System.out.println(vo.getCrudMode());
-				System.out.println(vo);
+				log.debug(vo.getCrudMode());
 				// update
 				if(StringUtils.equalsIgnoreCase("U", vo.getCrudMode())) {
 					this.update(vo);
@@ -81,7 +82,7 @@ public class FaqImgCrudService {
 				this.delete(vo);
 			}
 		}
-		System.out.println("==========================end======================================");
+		log.debug("==========================end======================================");
 	}
 
 

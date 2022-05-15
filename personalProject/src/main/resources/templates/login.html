@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<title>로그인</title>
+		<script>
+			function join() {
+				location.href = '/user/join'
+			}
+
+			function login() {
+				$('#loginFrm').submit();
+			}
+		</script>
+	</head>
+	<body>
+		<form id="loginFrm" action="/login" method="post">
+			<div align="center" style="margin:150px 0px">
+				<h1>로그인</h1>
+				<table>
+					<tr>
+						<th>ID</th>
+						<td><input type="text" name="id" id="id"></td>
+					</tr>
+					<tr>
+						<th>PASSWORD</th>
+						<td><input type="text" name="password" id="password" autocomplete='off'></td>
+					</tr>
+					<tr>
+						<td colspan="2" style="text-align: right">
+							<button type="button" onclick="join()">회원가입</button>
+							<button type="button" onclick="login()">로그인</button>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</form>
+	</body>
+</html>

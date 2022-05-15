@@ -15,7 +15,6 @@ public class FaqImg extends BaseVo {
 	private String delYn;
 	private String imgNm;
 	private String imgTitle;
-	private String crudMode;
 
 	private MultipartFile imgFile;
 }
