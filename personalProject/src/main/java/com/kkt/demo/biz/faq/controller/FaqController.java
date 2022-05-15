@@ -8,6 +8,7 @@ import javax.validation.Valid;
 
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,6 +23,7 @@ import com.kkt.demo.biz.faq.service.FaqImgService;
 import com.kkt.demo.biz.faq.service.FaqService;
 import com.kkt.demo.biz.faq.vo.Faq;
 import com.kkt.demo.biz.faq.vo.FaqImg;
+import com.kkt.demo.biz.user.vo.User;
 import com.kkt.demo.tools.FileTools;
 
 import lombok.RequiredArgsConstructor;
@@ -50,9 +52,9 @@ public class FaqController {
 	 * faq 등록화면
 	 */
 	@GetMapping("/add")
-	public ModelAndView addPage() {
-		ModelAndView mv = new ModelAndView("/faq/faqWrite");
-		return mv;
+	public String addPage(Model model, HttpSession session) {
+		model.addAttribute("id", session.getAttribute("id"));
+		return "faq/faqWrite";
 	}
 
 //	/*
@@ -70,7 +72,10 @@ public class FaqController {
 	 */
 	@PostMapping("save")
 	@ResponseBody
-	public void add(@Valid Faq faq) throws Exception {
+	public void add(@Valid Faq faq, HttpSession session) throws Exception {
+		User user = (User)session.getAttribute("user");
+		faq.setRgstrId(user.getId());
+		faq.setModrId(user.getId());
 		faqService.save(faq);
 	}
 
@@ -79,7 +84,10 @@ public class FaqController {
 	 */
 	@PostMapping("/edit")
 	@ResponseBody
-	public void edit(Faq faq) throws Exception {
+	public void edit(Faq faq, HttpSession session) throws Exception {
+		User user = (User)session.getAttribute("user");
+		faq.setRgstrId(user.getId());
+		faq.setModrId(user.getId());
 		faqService.edit(faq);
 	}
 

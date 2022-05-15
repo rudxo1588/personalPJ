@@ -33,6 +33,7 @@ public class LoginController {
 		if(vo != null) {
 			if(sha256.encryptSHA256(user.getPassword()).equals(vo.getPassword())) {
 				session.setAttribute("user", vo);
+
 			} else {
 				throw new Exception("아이디 또는 비밀번호가 맞지 않습니다");
 			}

@@ -24,6 +24,8 @@
 			,img_title
 			,rgstr_id
 			,rgst_dt
+			,modr_id
+			,mod_dt
 		)
 		VALUES
 		(
@@ -33,7 +35,9 @@
 			,#{imgNm}
 			,#{imgTitle}
 			,#{rgstrId}
-			,SYSDATE()
+			,NOW()
+			,#{modrId}
+			,NOW()
 		)
 	</insert>
 
@@ -46,7 +50,7 @@
 			,faq_img	= 	#{faqImg}
 			,img_nm		=	#{imgNm}
 			,modr_id	=	#{modrId}
-			,mod_dt		= 	SYSDATE()
+			,mod_dt		= 	NOW()
 		WHERE img_seq 	=	#{imgSeq}
 	</update>
 
@@ -56,7 +60,7 @@
 		UPDATE faq_img SET
 			 del_yn = 'Y'
 			,modr_id	=	#{modrId}
-			,mod_dt		= 	SYSDATE()
+			,mod_dt		= 	NOW()
 		WHERE faq_seq = #{faqSeq}
 	</update>
 

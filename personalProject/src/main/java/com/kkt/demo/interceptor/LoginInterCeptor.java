@@ -17,7 +17,7 @@ public class LoginInterCeptor implements HandlerInterceptor{
 	@Override
 	/*
 	 * preHandle은 Controller의 메소드에 매핑된
-	 * 특정 URI를 호출했을 때 Contoller에 접귾기 전에 실행된다.
+	 * 특정 URI를 호출했을 때 Contoller에 접근하기 전에 실행된다.
 	 * 세션이 있다면 true 없으면 false 를 리턴한다.
 	 */
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)

@@ -48,7 +48,7 @@ public class FaqService {
 		int result = faqMapper.insert(faq);
 
 		if(result > 0) {
-			faqImgCrudService.saveList(faq.getFaqSeq() ,faq.getFaqImgList());
+			faqImgCrudService.saveList(faq);
 		}
 
 		return result;
@@ -71,7 +71,7 @@ public class FaqService {
 		int result = faqMapper.update(faq);
 
 		if(result > 0) {
-			faqImgCrudService.saveList(faq.getFaqSeq() , faq.getFaqImgList());
+			faqImgCrudService.saveList(faq);
 		}
 
 		return result;

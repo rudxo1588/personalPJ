@@ -37,6 +37,8 @@
 			,faq_type
 			,rgstr_id
 			,rgst_dt
+			,modr_id
+			,mod_dt
 		)
 		VALUES
 		(
@@ -45,7 +47,9 @@
 			,'N'
 			,#{FaqType}
 			,#{rgstrId}
-			,SYSDATE()
+			,NOW()
+			,#{modrId}
+			,NOW()
 		)
 	</insert>
 
@@ -56,7 +60,7 @@
 			 faq_title 		= #{faqTitle}
 			,faq_content 	= #{faqContent}
 			,modr_id	=	#{modrId}
-			,mod_dt		= 	SYSDATE()
+			,mod_dt		= 	NOW()
 		where faq_seq 		= #{faqSeq}
 	</update>
 
@@ -66,7 +70,7 @@
 		update faq set
 			 faq_del_yn		= 'Y'
 			,modr_id	=	#{modrId}
-			,mod_dt		= 	SYSDATE()
+			,mod_dt		= 	NOW()
 		where faq_seq 		= #{faqSeq}
 	</update>
 

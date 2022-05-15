@@ -6,6 +6,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import com.kkt.demo.biz.faq.mapper.FaqImgMapper;
+import com.kkt.demo.biz.faq.vo.Faq;
 import com.kkt.demo.biz.faq.vo.FaqImg;
 import com.kkt.demo.tools.FileTools;
 
@@ -54,14 +55,17 @@ public class FaqImgCrudService {
 	}
 
 	// crudMode에 따라서 각각 CRUD실행
-	public void saveList(Integer faqSeq, List<FaqImg> list) throws Exception {
+	public void saveList(Faq faq) throws Exception {
 
+		List<FaqImg> list = faq.getFaqImgList();
 		list = this.setImgInfo(list);
 
 		log.debug("==========================start======================================");
 		if(list != null && list.size() > 0) {
 			for (FaqImg vo : list) {
-				vo.setFaqSeq(faqSeq);
+				vo.setFaqSeq(faq.getFaqSeq());
+				vo.setRgstrId(faq.getRgstrId());
+				vo.setModrId(faq.getModrId());
 				log.debug(vo.getCrudMode());
 				// update
 				if(StringUtils.equalsIgnoreCase("U", vo.getCrudMode())) {
