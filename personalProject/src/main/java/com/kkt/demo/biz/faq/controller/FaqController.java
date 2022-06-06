@@ -41,9 +41,10 @@ public class FaqController {
 	 * faq리스트 조회
 	 */
 	@GetMapping("/list")
-	public ModelAndView list() {
+	public ModelAndView list(Faq faq) {
 		ModelAndView mv = new ModelAndView("/faq/faqList");
-		mv.addObject("list", faqService.getList());
+		System.out.println(faq);
+		mv.addObject("list", faqService.getList(faq));
 
 		return mv;
 	}
@@ -67,15 +68,13 @@ public class FaqController {
 //		faqService.add(faq, file);
 //	}
 
+
 	/*
 	 * faq 등록
 	 */
 	@PostMapping("save")
 	@ResponseBody
-	public void add(@Valid Faq faq, HttpSession session) throws Exception {
-		User user = (User)session.getAttribute("user");
-		faq.setRgstrId(user.getId());
-		faq.setModrId(user.getId());
+	public void add(@Valid Faq faq) throws Exception {
 		faqService.save(faq);
 	}
 
@@ -96,6 +95,7 @@ public class FaqController {
 	 */
 	@GetMapping("/getDetail")
 	public ModelAndView getDetail(Faq faq) {
+		System.out.println(faq.getModrId());
 		ModelAndView mv = new ModelAndView("/faq/faqDetail");
 		mv.addObject("faq", faqService.getDetail(faq));
 		return mv;

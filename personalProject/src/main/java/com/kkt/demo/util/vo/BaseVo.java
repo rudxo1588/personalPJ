@@ -5,7 +5,7 @@ import java.time.LocalDate;
 import lombok.Data;
 
 @Data
-public class BaseVo {
+public class BaseVo extends PagingVo{
 
 	private String rgstrId;
 

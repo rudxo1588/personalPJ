@@ -26,15 +26,18 @@ public class LoginInterCeptor implements HandlerInterceptor{
 		HttpSession session = request.getSession(false); // true라면 세션이 없을때 새로 만들어준다. false 면 null을 리턴한다(없을때)
 
 		boolean result = true;
-
+		log.debug("session = " + session);
 		if(session != null) {
 			User user = (User) session.getAttribute("user");
+			log.debug("user = " + user);
 			if(user == null) {
 				result = false;
 			}
 		} else {
 			result = false;
 		}
+
+		log.debug("result = " + result);
 
 		if(!result) response.sendRedirect("/");
 		return result;

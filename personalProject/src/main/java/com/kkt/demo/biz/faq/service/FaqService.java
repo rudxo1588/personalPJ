@@ -28,7 +28,7 @@ public class FaqService {
 	/*
 	 * faq리스트 조회
 	 */
-	public List<Faq> getList() {
+	public List<Faq> getList(Faq faq) {
 		return faqMapper.getList();
 	}
 
@@ -44,11 +44,11 @@ public class FaqService {
 	 */
 	@Transactional
 	public int save(Faq faq) throws Exception {
-
-		int result = faqMapper.insert(faq);
+		Faq f = new Faq();
+		int result = faqMapper.insert(f);
 
 		if(result > 0) {
-			faqImgCrudService.saveList(faq);
+			faqImgCrudService.saveList(faq.getFaqImgList(), faq.getFaqSeq(), faq.getRgstrId());
 		}
 
 		return result;
@@ -77,7 +77,7 @@ public class FaqService {
 		int result = faqMapper.update(faq);
 
 		if(result > 0) {
-			faqImgCrudService.saveList(faq);
+			faqImgCrudService.saveList(faq.getFaqImgList(), faq.getFaqSeq(), faq.getRgstrId());
 		}
 
 		return result;

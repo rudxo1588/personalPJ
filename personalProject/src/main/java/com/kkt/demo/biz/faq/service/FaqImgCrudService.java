@@ -40,34 +40,18 @@ public class FaqImgCrudService {
 		return faqImgMapper.update(faqImg);
 	}
 
-	// 이미지 파일 입혀주기
-	public List<FaqImg> saveFile(List<FaqImg> list) throws Exception {
-
-		if(list != null && list.size() > 0) {
-			for (FaqImg vo : list) {
-				if (!vo.getImgFile().isEmpty()) {
-					vo.setFaqImg(FileTools.insertFile(vo.getImgFile()));
-					vo.setImgNm(vo.getImgFile().getOriginalFilename());
-				}
-			}
-		}
-
-		return list;
-	}
-
 	// crudMode에 따라서 각각 CRUD실행
-	public void saveList(Faq faq) throws Exception {
-
-		List<FaqImg> list = faq.getFaqImgList();
-		list = this.saveFile(list);
+	public void saveList(List<FaqImg> list, int faqSeq, String rgstrId) throws Exception {
 
 		log.debug("==========================start======================================");
 		if(list != null && list.size() > 0) {
 			for (FaqImg vo : list) {
 
-				vo.setFaqSeq(faq.getFaqSeq());
-				vo.setRgstrId(faq.getRgstrId());
-				vo.setModrId(faq.getModrId());
+				vo.setFaqSeq(faqSeq);
+				vo.setRgstrId(rgstrId);
+				vo.setModrId(rgstrId);
+				vo.setFaqImg(FileTools.insertFile(vo.getImgFile()));
+				vo.setImgNm(vo.getImgFile().getOriginalFilename());
 				log.debug(vo.getCrudMode());
 
 				// update
