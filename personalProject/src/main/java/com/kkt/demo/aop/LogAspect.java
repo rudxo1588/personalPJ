@@ -36,6 +36,7 @@ public class LogAspect {
 		log.debug("aop 진입 :::::::::::::" + pjp.getSourceLocation());
 
 		Faq faq = (Faq)ob[0];
+		log.debug("Around Aop :::::::::::::::::: " + faq.toString());
 		faq.setModrId("rudxo");
 		faq.setRgstrId("rudxo");
 
@@ -48,21 +49,18 @@ public class LogAspect {
 		Object[] ob = jp.getArgs();
 		log.debug("Before ::::::::::::::::::::::::::::::::::::::::::::::::::::::: ");
 		log.debug(jp.getSignature().getName());			// 단순 메소드 명을 나타냄 ex) save
-		log.debug(jp.getSignature().toLongString());	//
-		log.debug(jp.getSignature().toShortString());
+		log.debug(jp.getSignature().toLongString());	// 생성자, 리턴타입, 해당 컨트롤러의 패키지 경로, 메소드명, 파라미터
+		log.debug(jp.getSignature().toShortString());	// 컨트롤러명과 메소드명
 		log.debug(jp.getKind());
-		log.debug(jp.getStaticPart().toLongString());
-		log.debug(jp.getSourceLocation().getWithinType().toString());
+		log.debug(jp.getStaticPart().toLongString());	// getSignature().toLongString()와 같음 앞에 execution이걸로 묶여있는 부분이 다름
+		log.debug(jp.getSourceLocation().getWithinType().toString()); // 해당 소스의 패키지 상세 위치와 파일 종류를 나타냄 ex) class
 
-		log.debug("aop 진입 ::::::::::::::::::::::::::::::: " + ob[0].toString());
+		log.debug("aop 진입 ::::::::::::::::::::::::::::::: " + ob[0].toString());	// 컨트롤러를 타기 전에 들어와 a태그에 걸려있던 faqSeq만 값이 존재
 
-		Faq faq = (Faq) ob[0];
-		faq.setRgstrId("rudxo");
-		faq.setModrId("rudxo");
 
     }
 
-	@After("execution(* com.kkt.demo.biz.faq..*.*Service.getDetail(..))")
+	@After("execution(* com.kkt.demo.biz.faq..*.*Mapper.insert(..))")
 	public void after(JoinPoint jp) throws Throwable {
 		Object[] ob = jp.getArgs();
 		log.debug("After ::::::::::::::::::::::::::::::::::::::::::::::::::::::: ");
@@ -74,7 +72,6 @@ public class LogAspect {
 		log.debug(jp.getSourceLocation().getWithinType().toString());
 
 		log.debug("aop 진입 ::::::::::::::::::::::::::::::: " + ob[0].toString());
-
 	}
 
 	@AfterReturning(pointcut = "execution(* com.kkt.demo.biz.faq..*.*Service.getList(..))", returning = "result")
@@ -82,10 +79,11 @@ public class LogAspect {
 		log.debug(result.toString());
 	}
 
-//	@AfterThrowing(pointcut = "execution(* com.kkt.demo.biz.faq..*.*Service.save(..))", throwing = "exception")
-//	public void AfterThrowing(JoinPoint jp, Exception exception) throws Throwable {
-//		log.debug(exception.getMessage());
-//	}
+	@AfterThrowing(pointcut = "execution(* com.kkt.demo.biz.faq..*.*Service.test(..))", throwing = "exception")
+	public void AfterThrowing(JoinPoint jp, Exception exception) throws Throwable {
+		log.debug("exception ::::::::::::::: " + exception);
+		log.debug("exception ::::::::::::::: " + jp.getSignature().toShortString());
+	}
 
 
 

@@ -12,11 +12,15 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -28,7 +32,7 @@ import com.kkt.demo.biz.user.vo.User;
 
 import lombok.RequiredArgsConstructor;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
 @RequestMapping("/faq")
 public class FaqController {
@@ -38,85 +42,85 @@ public class FaqController {
 	private final FaqImgService faqImgService;
 
 	/*
-	 * faq리스트 조회
+	 * faq리스트 페이지 조회
 	 */
 	@GetMapping("/list")
-	public ModelAndView list(Faq faq) {
+	public ModelAndView listPage() {
 		ModelAndView mv = new ModelAndView("/faq/faqList");
-		System.out.println(faq);
-		mv.addObject("list", faqService.getList(faq));
-
 		return mv;
+	}
+
+	/*
+	 * faq리스트 조회
+	 */
+	@GetMapping("")
+	public List<Faq> list(Faq faq) {
+		List<Faq> list = faqService.getList(faq);
+		return list;
+	}
+
+
+	/*
+	 * faq 상세화면 페이지 이동
+	 */
+	@GetMapping("/detail/{faqSeq}")
+	public ModelAndView detailPage(@PathVariable(value="faqSeq")int faqSeq) {
+		ModelAndView mv = new ModelAndView("/faq/faqDetail");
+		mv.addObject("faqSeq", faqSeq);
+		return mv;
+	}
+
+	/*
+	 * faq상세화면
+	 */
+	@GetMapping("/{faqSeq}")
+	public Faq getDetail(@PathVariable("faqSeq") int faqSeq) {
+		Faq faq = new Faq();
+		faq = faqService.getDetail(faqSeq);
+		return faq;
 	}
 
 	/*
 	 * faq 등록화면
 	 */
 	@GetMapping("/add")
-	public String addPage(Model model, HttpSession session) {
-		model.addAttribute("id", session.getAttribute("id"));
-		return "faq/faqWrite";
+	public ModelAndView addPage() {
+		ModelAndView mv = new ModelAndView("faq/faqWrite");
+		return mv;
 	}
-
-//	/*
-//	 * faq 등록
-//	 */
-//	@PostMapping("/add")
-//	@ResponseBody
-//	public void add(@Valid Faq faq, @RequestParam(value = "file", required = false) List<MultipartFile> file) throws Exception {
-//
-//		faqService.add(faq, file);
-//	}
-
 
 	/*
 	 * faq 등록
 	 */
-	@PostMapping("save")
-	@ResponseBody
-	public void add(@Valid Faq faq) throws Exception {
+	@PostMapping("")
+	public void save(@Valid Faq faq) throws Exception {
 		faqService.save(faq);
 	}
 
 	/*
 	 * faq 수정
 	 */
-	@PostMapping("/edit")
-	@ResponseBody
-	public void edit(Faq faq, HttpSession session) throws Exception {
+	@PutMapping("/{faqSeq}")
+	public void edit(@PathVariable(value = "faqSeq")int faqSeq, HttpSession session, @Valid Faq faq) throws Exception {
+
 		User user = (User)session.getAttribute("user");
+
 		faq.setRgstrId(user.getId());
 		faq.setModrId(user.getId());
+		faq.setFaqSeq(faqSeq);
+
 		faqService.edit(faq);
 	}
 
-	/*
-	 * faq상세화면
-	 */
-	@GetMapping("/getDetail")
-	public ModelAndView getDetail(Faq faq) {
-		System.out.println(faq.getModrId());
-		ModelAndView mv = new ModelAndView("/faq/faqDetail");
-		mv.addObject("faq", faqService.getDetail(faq));
-		return mv;
-	}
 
 	/*
 	 * faq 삭제
 	 */
-	@PostMapping("/delete")
-	@ResponseBody
-	public void delete(Faq faq) throws Exception {
+	@DeleteMapping("/{faqSeq}")
+	public void delete(@PathVariable(value="faqSeq") int faqSeq) throws Exception {
+		Faq faq = new Faq();
+		faq.setFaqSeq(faqSeq);
 		faqService.delete(faq);
-	}
-
-	/*
-	 * faqImg 삭제
-	 */
-	@PostMapping("/deleteByImgSeq")
-	@ResponseBody
-	public void deleteByImgSeq(FaqImg faqImg) throws Exception {
-		faqImgService.delete(faqImg);
 	}
 
 	@PostMapping("/excel/upload")

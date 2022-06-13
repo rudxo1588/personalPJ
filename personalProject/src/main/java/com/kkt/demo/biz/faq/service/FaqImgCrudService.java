@@ -50,9 +50,10 @@ public class FaqImgCrudService {
 				vo.setFaqSeq(faqSeq);
 				vo.setRgstrId(rgstrId);
 				vo.setModrId(rgstrId);
-				vo.setFaqImg(FileTools.insertFile(vo.getImgFile()));
-				vo.setImgNm(vo.getImgFile().getOriginalFilename());
-				log.debug(vo.getCrudMode());
+				if(!vo.getImgFile().isEmpty()) {
+					vo.setFaqImg(FileTools.insertFile(vo.getImgFile()));
+					vo.setImgNm(vo.getImgFile().getOriginalFilename());
+				}
 
 				// update
 				if(StringUtils.equalsIgnoreCase("U", vo.getCrudMode())) {

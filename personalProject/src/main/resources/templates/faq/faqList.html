@@ -5,8 +5,31 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <title>FAQ 목록</title>
 <script>
+	window.onload = function() {
+		fnFaqList();
+	}
+
+	function fnFaqList() {
+		$.ajax({
+			url		: '/faq',
+			method	: 'get',
+			success	: function(res, result) {
+				let html = '';
+				res.forEach(function(v, idx) {
+					html += '<tr>'
+					html += 	'<td>'+ v.faqSeq +'</td>';
+					html += 	'<td><a href="/faq/detail/'+v.faqSeq+'">'+ v.faqTitle +'</a></td>';
+					html += 	'<td>'+ v.faqContent +'</td>';
+					html += 	'<td>'+ v.rgstDt +'</td>';
+					html += '</tr>'
+				});
+				$('#faqBody').append(html);
+			}
+		});
+	}
+
 	function fnRegBtn() {
-		location.href = '/faq/add';
+		location.href = '/faq/0';
 	}
 
 	function fnExcelUpload() {
@@ -49,12 +72,9 @@
 					<th>내용</th>
 					<th>등록일</th>
 				</tr>
-				<tr th:each="list : ${list}">
-					<td>[[${list.faqSeq}]]</td>
-					<td><a th:href="'/faq/getDetail?faqSeq=' + ${list.faqSeq} + ''">[[${list.faqTitle}]]</a></td>
-					<td>[[${list.faqContent}]]</td>
-					<td>[[${list.rgstDt}]]</td>
-				</tr>
+				<tbody id="faqBody">
+
+				</tbody>
 				<tr>
 					<td colspan="4">
 						<input type="file" name="excel" id="excel">엑셀 업로드

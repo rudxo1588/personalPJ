@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script type="text/javascript" src="../js/jquery.tmpl.min.js"></script>
+<script type="text/javascript" src="../../static/js/jquery.tmpl.min.js"></script>
 <title>FAQ 등록</title>
 <script>
 	$.fn.serializeObject = function() {
@@ -47,14 +47,14 @@
 		var formData = new FormData($('#frm')[0]);
 
 		$.ajax({
-			 url 		: '/faq/save'
+			 url 		: '/faq'
 			,type 		: 'post'
 			,data 		: formData
 			,contentType: false
 			,processData: false
 			,success	: function(res) {
 				alert('저장 성공');
-				location.href = '/faq/list';
+				location.href = '/faq';
 			}
 			,error 		: function(request) {
 				alert(JSON.parse(request.responseText).reason);

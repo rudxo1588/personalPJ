@@ -1,17 +1,12 @@
 package com.kkt.demo.biz.faq.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
-import com.kkt.demo.biz.faq.mapper.FaqImgMapper;
 import com.kkt.demo.biz.faq.mapper.FaqMapper;
 import com.kkt.demo.biz.faq.vo.Faq;
-import com.kkt.demo.biz.faq.vo.FaqImg;
-import com.kkt.demo.tools.FileTools;
 
 import lombok.RequiredArgsConstructor;
 
@@ -20,8 +15,6 @@ import lombok.RequiredArgsConstructor;
 public class FaqService {
 
 	private final FaqMapper faqMapper;
-
-	private final FaqImgService faqImgService;
 
 	private final FaqImgCrudService faqImgCrudService;
 
@@ -35,8 +28,8 @@ public class FaqService {
 	/*
 	 * faq상세화면
 	 */
-	public Faq getDetail(Faq faq) {
-		return faqMapper.getDetail(faq);
+	public Faq getDetail(int faqSeq) {
+		return faqMapper.getDetail(faqSeq);
 	}
 
 	/*
@@ -44,8 +37,7 @@ public class FaqService {
 	 */
 	@Transactional
 	public int save(Faq faq) throws Exception {
-		Faq f = new Faq();
-		int result = faqMapper.insert(f);
+		int result = faqMapper.insert(faq);
 
 		if(result > 0) {
 			faqImgCrudService.saveList(faq.getFaqImgList(), faq.getFaqSeq(), faq.getRgstrId());
@@ -54,6 +46,9 @@ public class FaqService {
 		return result;
 	}
 
+	/*
+	 * faqList 저장
+	*/
 	public void addList(List<Faq> faqList) throws Exception {
 		for (Faq vo : faqList) {
 			this.save(vo);
@@ -61,7 +56,7 @@ public class FaqService {
 	}
 
 	/*
-	 * faq삭제
+	 * faq 삭제
 	 */
 	@Transactional
 	public int delete(Faq faq) {
@@ -69,7 +64,7 @@ public class FaqService {
 	}
 
 	/*
-	 * faq수정
+	 * faq 수정
 	 */
 	@Transactional
 	public int edit(Faq faq) throws Exception {
@@ -82,5 +77,7 @@ public class FaqService {
 
 		return result;
 	}
+
+
 
 }

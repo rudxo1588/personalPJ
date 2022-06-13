@@ -19,5 +19,5 @@ public interface FaqMapper {
 
 	int delete(Faq faq);
 
-	Faq getDetail(Faq faq);
+	Faq getDetail(int faqSeq);
 }

@@ -23,7 +23,7 @@ public class WebMvcConfig implements WebMvcConfigurer{
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 		log.debug("=================addInterceptors================");
-		registry.addInterceptor(new LoginInterCeptor()).addPathPatterns( "/faq/list","/faq/add","/faq/getDetail");
+		registry.addInterceptor(new LoginInterCeptor()).addPathPatterns( "/faq", "/faq/{faqSeq}", "/faq/detail/{faqSeq}");
 	}
 
 

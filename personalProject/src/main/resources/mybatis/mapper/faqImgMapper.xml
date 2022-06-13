@@ -45,14 +45,12 @@
 		/* FaqImgMapper.update */
 		UPDATE faq_img
 		SET
-		<trim prefix="SET" suffixOverrides=",">
 			 faq_seq 	= 	#{faqSeq}
 			,img_title  =	#{imgTitle}
 			,faq_img	= 	#{faqImg}
 			,img_nm		=	#{imgNm}
 			,modr_id	=	#{modrId}
 			,mod_dt		= 	NOW()
-		</trim>
 		WHERE img_seq 	=	#{imgSeq}
 	</update>
 

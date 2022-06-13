@@ -51,8 +51,6 @@ public class LoginInterCeptor implements HandlerInterceptor{
 	 */
 	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
 			ModelAndView modelAndView) throws Exception {
-		log.debug("postHandle " + modelAndView.toString());
-		HttpSession session = request.getSession();
 	}
 
 
