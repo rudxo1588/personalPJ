@@ -29,7 +29,7 @@
 	}
 
 	function fnRegBtn() {
-		location.href = '/faq/0';
+		location.href = '/faq/add';
 	}
 
 	function fnExcelUpload() {
@@ -44,6 +44,19 @@
 			,success	: function(res) {
 				alert('업로드 성공');
 				location.reload();
+			}
+			,error 		: function(request) {
+				alert(JSON.parse(request.responseText).reason);
+			}
+		});
+	}
+
+	function test() {
+		$.ajax({
+			url		: '/faq/test',
+			method	: 'post',
+			success	: function(res) {
+				alert('테스트 성공');
 			}
 			,error 		: function(request) {
 				alert(JSON.parse(request.responseText).reason);
@@ -84,6 +97,11 @@
 				<tr>
 					<td colspan="4" style="text-align: right;">
 						<button type="button" onclick="fnRegBtn()">등록</button>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="4" style="text-align: right;">
+						<button type="button" onclick="test()">AOP에러용</button>
 					</td>
 				</tr>
 			</table>

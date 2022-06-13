@@ -10,24 +10,16 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.kkt.demo.biz.faq.service.FaqImgService;
 import com.kkt.demo.biz.faq.service.FaqService;
 import com.kkt.demo.biz.faq.vo.Faq;
-import com.kkt.demo.biz.faq.vo.FaqImg;
 import com.kkt.demo.biz.user.vo.User;
 
 import lombok.RequiredArgsConstructor;
@@ -39,12 +31,10 @@ public class FaqController {
 
 	private final FaqService faqService;
 
-	private final FaqImgService faqImgService;
-
 	/*
 	 * faq리스트 페이지 조회
 	 */
-	@GetMapping("/list")
+	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView listPage() {
 		ModelAndView mv = new ModelAndView("/faq/faqList");
 		return mv;
@@ -53,7 +43,7 @@ public class FaqController {
 	/*
 	 * faq리스트 조회
 	 */
-	@GetMapping("")
+	@RequestMapping(value = "", method = RequestMethod.GET)
 	public List<Faq> list(Faq faq) {
 		List<Faq> list = faqService.getList(faq);
 		return list;
@@ -63,7 +53,7 @@ public class FaqController {
 	/*
 	 * faq 상세화면 페이지 이동
 	 */
-	@GetMapping("/detail/{faqSeq}")
+	@RequestMapping(value = "/detail/{faqSeq}", method = RequestMethod.GET)
 	public ModelAndView detailPage(@PathVariable(value="faqSeq")int faqSeq) {
 		ModelAndView mv = new ModelAndView("/faq/faqDetail");
 		mv.addObject("faqSeq", faqSeq);
@@ -73,7 +63,7 @@ public class FaqController {
 	/*
 	 * faq상세화면
 	 */
-	@GetMapping("/{faqSeq}")
+	@RequestMapping(value = "/{faqSeq}", method = RequestMethod.GET)
 	public Faq getDetail(@PathVariable("faqSeq") int faqSeq) {
 		Faq faq = new Faq();
 		faq = faqService.getDetail(faqSeq);
@@ -83,7 +73,7 @@ public class FaqController {
 	/*
 	 * faq 등록화면
 	 */
-	@GetMapping("/add")
+	@RequestMapping(value = "/add", method = RequestMethod.GET)
 	public ModelAndView addPage() {
 		ModelAndView mv = new ModelAndView("faq/faqWrite");
 		return mv;
@@ -92,15 +82,18 @@ public class FaqController {
 	/*
 	 * faq 등록
 	 */
-	@PostMapping("")
-	public void save(@Valid Faq faq) throws Exception {
+	@RequestMapping(value = "", method = RequestMethod.POST)
+	public void save(@Valid Faq faq, HttpSession session) throws Exception {
+		User user = (User)session.getAttribute("user");
+		faq.setRgstrId(user.getId());
+		faq.setModrId(user.getId());
 		faqService.save(faq);
 	}
 
 	/*
 	 * faq 수정
 	 */
-	@PutMapping("/{faqSeq}")
+	@RequestMapping(value = "/{faqSeq}", method = RequestMethod.PUT)
 	public void edit(@PathVariable(value = "faqSeq")int faqSeq, HttpSession session, @Valid Faq faq) throws Exception {
 
 		User user = (User)session.getAttribute("user");
@@ -116,14 +109,17 @@ public class FaqController {
 	/*
 	 * faq 삭제
 	 */
-	@DeleteMapping("/{faqSeq}")
+	@RequestMapping(value = "/{faqSeq}", method = RequestMethod.DELETE)
 	public void delete(@PathVariable(value="faqSeq") int faqSeq) throws Exception {
 		Faq faq = new Faq();
 		faq.setFaqSeq(faqSeq);
 		faqService.delete(faq);
 	}
 
-	@PostMapping("/excel/upload")
+	/*
+	 * faq 엑셀등록
+	 */
+	@RequestMapping(value = "/excel/upload", method = RequestMethod.POST)
 	public String excelUpload(@RequestParam(value = "excel", required = false) MultipartFile file , HttpSession session) throws Exception {
 
 		User user = (User)session.getAttribute("user");
@@ -151,5 +147,11 @@ public class FaqController {
 
 
 		return "faq/faqList";
+	}
+
+	// aop 에러용
+	@RequestMapping(value = "/test" , method = RequestMethod.POST)
+	public void test() throws Exception {
+		faqService.test();
 	}
 }

@@ -29,16 +29,17 @@ public class LogAspect {
 	public Object faqLog(ProceedingJoinPoint pjp) throws Throwable {
 
 		Object[] ob = pjp.getArgs();
-		log.debug("aop 진입 :::::::::::::" + pjp.getKind().toString());
+		log.debug("aop 진입 :::::::::::::" + pjp.getSignature().getModifiers());
 		log.debug("aop 진입 :::::::::::::" + pjp.toLongString());
 		log.debug("aop 진입 :::::::::::::" + pjp.toShortString());
 		log.debug("aop 진입 :::::::::::::" + pjp.getSignature());
 		log.debug("aop 진입 :::::::::::::" + pjp.getSourceLocation());
+		log.debug("aop 진입 :::::::::::::" + pjp.getSourceLocation());
+		log.debug("aop 진입 :::::::::::::" + ob[0]);
 
 		Faq faq = (Faq)ob[0];
-		log.debug("Around Aop :::::::::::::::::: " + faq.toString());
-		faq.setModrId("rudxo");
-		faq.setRgstrId("rudxo");
+
+		log.debug("faq::::::::::::::::: " + faq);
 
 		return faq;
 	}
@@ -76,13 +77,17 @@ public class LogAspect {
 
 	@AfterReturning(pointcut = "execution(* com.kkt.demo.biz.faq..*.*Service.getList(..))", returning = "result")
 	public void afterReturning(JoinPoint jp, List<Faq> result) throws Throwable {
-		log.debug(result.toString());
+		log.debug("afterReturning:::::::::: " + result.toString());
+		log.debug("afterReturning:::::::::: " + jp.getSignature().toShortString());
 	}
 
+	// 에러가 났을경우 해당 메소드를 타며 에러의 종류, 에러가 난 메소드명을 반환한다.
 	@AfterThrowing(pointcut = "execution(* com.kkt.demo.biz.faq..*.*Service.test(..))", throwing = "exception")
 	public void AfterThrowing(JoinPoint jp, Exception exception) throws Throwable {
 		log.debug("exception ::::::::::::::: " + exception);
 		log.debug("exception ::::::::::::::: " + jp.getSignature().toShortString());
+		log.debug("exception ::::::::::::::: " + jp.getSignature().toLongString());
+		log.debug("exception ::::::::::::::: " + jp.getSignature().getDeclaringTypeName());
 	}
 
 
