@@ -3,17 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script type="text/javascript" src="/js/jquery.tmpl.min.js"></script>
+<script type="text/javascript" src="/js/ajaxUtil.js"></script>
 <title>FAQ 목록</title>
 <script>
 	window.onload = function() {
 		fnFaqList();
 	}
 
+	// 단순 ajax호출
 	function fnFaqList() {
-		$.ajax({
-			url		: '/faq',
-			method	: 'get',
-			success	: function(res, result) {
+		ajax('get', '/faq','', function(res, result) {
+			if(result == 'success') {
 				let html = '';
 				res.forEach(function(v, idx) {
 					html += '<tr>'
@@ -35,18 +36,10 @@
 	function fnExcelUpload() {
 
 		var formData = new FormData($('#excelFrm')[0]);
-		$.ajax({
-			 url 		: '/faq/excel/upload'
-			,type 		: 'post'
-			,data 		: formData
-			,contentType: false
-			,processData: false
-			,success	: function(res) {
+		ajax('post', '/faq/excel/upload',formData, function(res, result) {
+			if(result == 'success') {
 				alert('업로드 성공');
 				location.reload();
-			}
-			,error 		: function(request) {
-				alert(JSON.parse(request.responseText).reason);
 			}
 		});
 	}
