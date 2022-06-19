@@ -25,50 +25,38 @@
 	}
 
 	function fnFaqDetail(seq) {
-		$.ajax({
-			url		: '/faq/'+seq,
-			method	: 'get',
-			success	: function(res, result) {
-				$('#faqTitle').val(res.faqTitle);
-				$('#faqContent').val(res.faqContent);
-				if(res.faqImgList.length > 0) {
-					let html = '';
-					res.faqImgList.forEach(function(v, idx) {
-						html += '<tr class="imgTr">'
-						html += '	<td class="imgTd">'
-						html += '		<img class="img" src="/upload/'+v.faqImg+'" style="width: 200px;">';
-						html += '		<input type="hidden" class="crudMode" value="R">';
-						html += '		<input type="hidden" class="imgSeq" value='+v.imgSeq+'>';
-						html += '		<input type="hidden" class="faqImg" value='+v.faqImg+'>';
-						html += '		<input type="hidden" class="imgNm" value='+v.imgNm+'>';
-						html += '		<input type="text" class="imgTitle" value='+v.imgTitle+' onchange="fnTtlChange(this)">';
-						html += '		<input class="file" type="file" id="file'+idx+'" name="file" style="display:none;" onchange="fnFileUpload(this,'+idx+')" accept=".gif, .jpg, .png, .jpeg">';
-						html += '		<label for="file'+idx+'" id="fileNm'+idx+'">'+v.imgNm+'</label>';
-						html += '		<button type="button" onclick="fnDelFileRow(this)">-</button>';
-						html += '	</td>'
-						html += '</tr>'
-					});
-					$('#faqTable').append(html);
-				}
+		AjaxUtil.ajax('get', '/faq/'+seq ,'', function(res, xhr) {
+			$('#faqTitle').val(res.faqTitle);
+			$('#faqContent').val(res.faqContent);
+			if(res.faqImgList.length > 0) {
+				let html = '';
+				res.faqImgList.forEach(function(v, idx) {
+					html += '<tr class="imgTr">'
+					html += '	<td class="imgTd">'
+					html += '		<img class="img" src="/upload/'+v.faqImg+'" style="width: 200px;">';
+					html += '		<input type="hidden" class="crudMode" value="R">';
+					html += '		<input type="hidden" class="imgSeq" value='+v.imgSeq+'>';
+					html += '		<input type="hidden" class="faqImg" value='+v.faqImg+'>';
+					html += '		<input type="hidden" class="imgNm" value='+v.imgNm+'>';
+					html += '		<input type="text" class="imgTitle" value='+v.imgTitle+' onchange="fnTtlChange(this)">';
+					html += '		<input class="file" type="file" id="file'+idx+'" name="file" style="display:none;" onchange="fnFileUpload(this,'+idx+')" accept=".gif, .jpg, .png, .jpeg">';
+					html += '		<label for="file'+idx+'" id="fileNm'+idx+'">'+v.imgNm+'</label>';
+					html += '		<button type="button" onclick="fnDelFileRow(this)">-</button>';
+					html += '	</td>'
+					html += '</tr>'
+				});
+				$('#faqTable').append(html);
 			}
-		})
+		});
 	}
 
 	// faq삭제
 	function fnDelBtn(seq) {
-		if(confirm('삭제하시겠습니까?')) {
-			$.ajax({
 
-				url 		: '/faq/'+seq,
-				method 		: 'delete',
-				dataType	: 'json',
-				success : function(res) {
-					alert('삭제되었습니다.');
-					location.href = '/faq/list';
-				},
-				error : function() {
-					console.log('에러발생');
-				}
+		if(confirm('삭제하시겠습니까?')) {
+			AjaxUtil.ajax('delete', '/faq/'+seq ,'', function(res, xhr) {
+				alert('삭제되었습니다.');
+				location.href = '/faq/list';
 			});
 		}
 	}
@@ -97,19 +85,9 @@
 
 		var formData = new FormData($('#frm')[0]);
 
-		$.ajax({
-			 url 		: '/faq/'+seq
-			,method 	: 'put'
-			,data 		: formData
-			,contentType: false
-			,processData: false
-			,success	: function(res) {
-				alert('저장 성공');
-				location.reload();
-			}
-			,error 		: function(request) {
-				alert(JSON.parse(request.responseText).reason);
-			}
+		AjaxUtil.ajax('put', '/faq/'+seq ,formData, function(res, xhr) {
+			alert('저장 성공');
+			location.reload();
 		});
 	}
 

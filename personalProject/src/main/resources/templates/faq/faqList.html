@@ -11,21 +11,18 @@
 		fnFaqList();
 	}
 
-	// 단순 ajax호출
 	function fnFaqList() {
-		ajax('get', '/faq','', function(res, result) {
-			if(result == 'success') {
-				let html = '';
-				res.forEach(function(v, idx) {
-					html += '<tr>'
-					html += 	'<td>'+ v.faqSeq +'</td>';
-					html += 	'<td><a href="/faq/detail/'+v.faqSeq+'">'+ v.faqTitle +'</a></td>';
-					html += 	'<td>'+ v.faqContent +'</td>';
-					html += 	'<td>'+ v.rgstDt +'</td>';
-					html += '</tr>'
-				});
-				$('#faqBody').append(html);
-			}
+		AjaxUtil.ajax('get', '/faq','', function(res, xhr) {
+			let html = '';
+			res.forEach(function(v, idx) {
+				html += '<tr>'
+				html += 	'<td>'+ v.faqSeq +'</td>';
+				html += 	'<td><a href="/faq/detail/'+v.faqSeq+'">'+ v.faqTitle +'</a></td>';
+				html += 	'<td>'+ v.faqContent +'</td>';
+				html += 	'<td>'+ v.rgstDt +'</td>';
+				html += '</tr>'
+			});
+			$('#faqBody').append(html);
 		});
 	}
 
@@ -34,26 +31,16 @@
 	}
 
 	function fnExcelUpload() {
-
 		var formData = new FormData($('#excelFrm')[0]);
-		ajax('post', '/faq/excel/upload',formData, function(res, result) {
-			if(result == 'success') {
-				alert('업로드 성공');
-				location.reload();
-			}
+		AjaxUtil.ajax('post', '/faq/excel/upload',formData, function(res, xhr) {
+			alert('업로드 성공');
+			location.reload();
 		});
 	}
 
 	function test() {
-		$.ajax({
-			url		: '/faq/test',
-			method	: 'post',
-			success	: function(res) {
-				alert('테스트 성공');
-			}
-			,error 		: function(request) {
-				alert(JSON.parse(request.responseText).reason);
-			}
+		AjaxUtil.ajax('post', '/faq/test','', function(res) {
+			alert('테스트 성공');
 		});
 	}
 </script>

@@ -25,23 +25,18 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class LogAspect {
 
-	@Around("execution(* com.kkt.demo.biz.faq..*.*Service.save(..))")
+	@Around("execution(* com.kkt.demo.biz.faq..*.*Controller.test(..))")
 	public Object faqLog(ProceedingJoinPoint pjp) throws Throwable {
 
-		Object[] ob = pjp.getArgs();
-		log.debug("aop 진입 :::::::::::::" + pjp.getSignature().getModifiers());
-		log.debug("aop 진입 :::::::::::::" + pjp.toLongString());
-		log.debug("aop 진입 :::::::::::::" + pjp.toShortString());
-		log.debug("aop 진입 :::::::::::::" + pjp.getSignature());
-		log.debug("aop 진입 :::::::::::::" + pjp.getSourceLocation());
-		log.debug("aop 진입 :::::::::::::" + pjp.getSourceLocation());
-		log.debug("aop 진입 :::::::::::::" + ob[0]);
+		System.out.println("[testAround] Before");
 
-		Faq faq = (Faq)ob[0];
+        // Application Method Execution
+        Object result = pjp.proceed();
 
-		log.debug("faq::::::::::::::::: " + faq);
+        // After Logic Execution
+        System.out.println("[testAround] After");
 
-		return faq;
+		return result;
 	}
 
 

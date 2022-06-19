@@ -39,7 +39,7 @@ public class FaqService {
 	public int save(Faq faq) throws Exception {
 		int result = faqMapper.insert(faq);
 		System.out.println(result);
-		System.out.println(faq);
+		System.out.println(":::::::::::::::::::::::::::::::: " + faq);
 
 		if(result > 0) {
 			faqImgCrudService.saveList(faq.getFaqImgList(), faq.getFaqSeq(), faq.getRgstrId());

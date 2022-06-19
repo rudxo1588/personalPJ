@@ -10,10 +10,12 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
@@ -44,6 +46,7 @@ public class FaqController {
 	 * faq리스트 조회
 	 */
 	@RequestMapping(value = "", method = RequestMethod.GET)
+	@ResponseStatus(value = HttpStatus.OK)
 	public List<Faq> list(Faq faq) {
 		List<Faq> list = faqService.getList(faq);
 		return list;
@@ -64,6 +67,7 @@ public class FaqController {
 	 * faq상세화면
 	 */
 	@RequestMapping(value = "/{faqSeq}", method = RequestMethod.GET)
+	@ResponseStatus(value = HttpStatus.OK)
 	public Faq getDetail(@PathVariable("faqSeq") int faqSeq) {
 		Faq faq = new Faq();
 		faq = faqService.getDetail(faqSeq);
@@ -83,6 +87,7 @@ public class FaqController {
 	 * faq 등록
 	 */
 	@RequestMapping(value = "", method = RequestMethod.POST)
+	@ResponseStatus(value = HttpStatus.OK)
 	public void save(@Valid Faq faq, HttpSession session) throws Exception {
 		User user = (User)session.getAttribute("user");
 		faq.setRgstrId(user.getId());
@@ -94,6 +99,7 @@ public class FaqController {
 	 * faq 수정
 	 */
 	@RequestMapping(value = "/{faqSeq}", method = RequestMethod.PUT)
+	@ResponseStatus(value = HttpStatus.OK)
 	public void edit(@PathVariable(value = "faqSeq")int faqSeq, HttpSession session, @Valid Faq faq) throws Exception {
 
 		User user = (User)session.getAttribute("user");
@@ -110,6 +116,7 @@ public class FaqController {
 	 * faq 삭제
 	 */
 	@RequestMapping(value = "/{faqSeq}", method = RequestMethod.DELETE)
+	@ResponseStatus(value = HttpStatus.OK)
 	public void delete(@PathVariable(value="faqSeq") int faqSeq) throws Exception {
 		Faq faq = new Faq();
 		faq.setFaqSeq(faqSeq);
@@ -120,6 +127,7 @@ public class FaqController {
 	 * faq 엑셀등록
 	 */
 	@RequestMapping(value = "/excel/upload", method = RequestMethod.POST)
+	@ResponseStatus(value = HttpStatus.OK)
 	public String excelUpload(@RequestParam(value = "excel", required = false) MultipartFile file , HttpSession session) throws Exception {
 
 		User user = (User)session.getAttribute("user");

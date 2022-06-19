@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script type="text/javascript" src="../../static/js/jquery.tmpl.min.js"></script>
+<script type="text/javascript" src="/js/jquery.tmpl.min.js"></script>
+<script type="text/javascript" src="/js/ajaxUtil.js"></script>
 <title>FAQ 등록</title>
 <script>
 	$.fn.serializeObject = function() {
@@ -27,17 +28,17 @@
 
 
 	function fnRegBtn() {
-// 		if($('#faqTitle').val() == '') {
-// 			alert('제목을 입력해 주세요');
-// 			$('#faqTitle').focus();
-// 			return;
-// 		}
+		if($('#faqTitle').val() == '') {
+			alert('제목을 입력해 주세요');
+			$('#faqTitle').focus();
+			return;
+		}
 
-// 		if($('#faqContent').val() == '') {
-// 			alert('내용을 입력해 주세요');
-// 			$('#faqContent').focus();
-// 			return;
-// 		}
+		if($('#faqContent').val() == '') {
+			alert('내용을 입력해 주세요');
+			$('#faqContent').focus();
+			return;
+		}
 		$('.imgTd').each(function(v) {
 			$(this).children('.file').prop('name', 'faqImgList['+v+'].imgFile');
 			$(this).children('.crudMode').prop('name', 'faqImgList['+v+'].crudMode');
@@ -45,20 +46,9 @@
 		});
 
 		var formData = new FormData($('#frm')[0]);
-
-		$.ajax({
-			 url 		: '/faq'
-			,type 		: 'post'
-			,data 		: formData
-			,contentType: false
-			,processData: false
-			,success	: function(res) {
-				alert('저장 성공');
-				location.href = '/faq';
-			}
-			,error 		: function(request) {
-				alert(JSON.parse(request.responseText).reason);
-			}
+		AjaxUtil.ajax('post', '/faq',formData, function(res, xhr) {
+			alert('저장 성공');
+			location.href = '/faq/list';
 		});
 	}
 
