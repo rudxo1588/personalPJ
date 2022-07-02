@@ -12,7 +12,7 @@
 	}
 
 	function fnFaqList() {
-		AjaxUtil.ajax('get', '/faq','', function(res, xhr) {
+		AjaxUtil.get('/faq','', function(res, xhr) {
 			let html = '';
 			res.forEach(function(v, idx) {
 				html += '<tr>'
@@ -24,6 +24,15 @@
 			});
 			$('#faqBody').append(html);
 		});
+
+
+		var p = {
+
+			success : function() {
+
+			}
+		}
+		AjaxUtil.ajax(p)
 	}
 
 	function fnRegBtn() {
@@ -32,14 +41,14 @@
 
 	function fnExcelUpload() {
 		var formData = new FormData($('#excelFrm')[0]);
-		AjaxUtil.ajax('post', '/faq/excel/upload',formData, function(res, xhr) {
+		AjaxUtil.file('post', '/faq/excel/upload',formData, function(res, xhr) {
 			alert('업로드 성공');
 			location.reload();
 		});
 	}
 
 	function test() {
-		AjaxUtil.ajax('post', '/faq/test','', function(res) {
+		AjaxUtil.post('/faq/test','', function(res) {
 			alert('테스트 성공');
 		});
 	}

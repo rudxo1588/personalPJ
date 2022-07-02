@@ -25,7 +25,7 @@
 	}
 
 	function fnFaqDetail(seq) {
-		AjaxUtil.ajax('get', '/faq/'+seq ,'', function(res, xhr) {
+		AjaxUtil.get('/faq/'+seq ,'', function(res, xhr) {
 			$('#faqTitle').val(res.faqTitle);
 			$('#faqContent').val(res.faqContent);
 			if(res.faqImgList.length > 0) {
@@ -54,7 +54,7 @@
 	function fnDelBtn(seq) {
 
 		if(confirm('삭제하시겠습니까?')) {
-			AjaxUtil.ajax('delete', '/faq/'+seq ,'', function(res, xhr) {
+			AjaxUtil.delete('/faq/'+seq ,'', function(res, xhr) {
 				alert('삭제되었습니다.');
 				location.href = '/faq/list';
 			});
@@ -85,7 +85,7 @@
 
 		var formData = new FormData($('#frm')[0]);
 
-		AjaxUtil.ajax('put', '/faq/'+seq ,formData, function(res, xhr) {
+		AjaxUtil.file('put','/faq/'+seq ,formData, function(res, xhr) {
 			alert('저장 성공');
 			location.reload();
 		});

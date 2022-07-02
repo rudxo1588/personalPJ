@@ -52,7 +52,6 @@ public class FaqController {
 		return list;
 	}
 
-
 	/*
 	 * faq 상세화면 페이지 이동
 	 */

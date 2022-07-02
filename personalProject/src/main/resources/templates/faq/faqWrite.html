@@ -7,26 +7,6 @@
 <script type="text/javascript" src="/js/ajaxUtil.js"></script>
 <title>FAQ 등록</title>
 <script>
-	$.fn.serializeObject = function() {
-	  var result = {}
-	  var extend = function(i, element) {
-	    var node = result[element.name]
-	    if ("undefined" !== typeof node && node !== null) {
-	      if ($.isArray(node)) {
-	        node.push(element.value)
-	      } else {
-	        result[element.name] = [node, element.value]
-	      }
-	    } else {
-	      result[element.name] = element.value
-	    }
-	  }
-
-	  $.each(this.serializeArray(), extend)
-	  return result
-	}
-
-
 	function fnRegBtn() {
 		if($('#faqTitle').val() == '') {
 			alert('제목을 입력해 주세요');
@@ -46,7 +26,7 @@
 		});
 
 		var formData = new FormData($('#frm')[0]);
-		AjaxUtil.ajax('post', '/faq',formData, function(res, xhr) {
+		AjaxUtil.file('post','/faq',formData, function(res, xhr) {
 			alert('저장 성공');
 			location.href = '/faq/list';
 		});

@@ -60,8 +60,8 @@ public class LogAspect {
 	public void after(JoinPoint jp) throws Throwable {
 		Object[] ob = jp.getArgs();
 		log.debug("After ::::::::::::::::::::::::::::::::::::::::::::::::::::::: ");
-		log.debug(jp.getSignature().getName());			// 단순 메소드 명을 나타냄 ex) save
-		log.debug(jp.getSignature().toLongString());	//
+		log.debug(jp.getSignature().getName());
+		log.debug(jp.getSignature().toLongString());
 		log.debug(jp.getSignature().toShortString());
 		log.debug(jp.getKind());
 		log.debug(jp.getStaticPart().toLongString());
